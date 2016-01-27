@@ -10,6 +10,12 @@ import UIKit
 
 class ViewController: UIViewController {
 
-
+    @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
+        print("TAP")
+    }
+    
+    @IBAction func didPerformSwipeGesture(sender: UISwipeGestureRecognizer) {
+        print(sender.direction)
+    }
 }
 

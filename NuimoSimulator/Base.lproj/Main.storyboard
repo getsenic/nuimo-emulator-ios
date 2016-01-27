@@ -27,16 +27,25 @@
                             </switch>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Turn Nuimo On" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRs-3c-kFv">
                                 <rect key="frame" x="408" y="34" width="115" height="20"/>
+                                <gestureRecognizers/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="To6-OB-W5I">
                                 <rect key="frame" x="20" y="67" width="560" height="513"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="17f-Vj-Rnn" appends="YES" id="Jh2-yr-e77"/>
+                                    <outletCollection property="gestureRecognizers" destination="PcU-6C-gnB" appends="YES" id="VYb-DN-UaP"/>
+                                    <outletCollection property="gestureRecognizers" destination="xMl-Ip-B67" appends="YES" id="vkd-70-qO3"/>
+                                    <outletCollection property="gestureRecognizers" destination="xwt-6Q-zkw" appends="YES" id="n2K-n3-brJ"/>
+                                    <outletCollection property="gestureRecognizers" destination="TOo-2k-1nR" appends="YES" id="Kvi-lj-mpU"/>
+                                </connections>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="37w-ee-gqh" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="1eR-Lb-QPJ"/>
                             <constraint firstItem="To6-OB-W5I" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="E2J-dP-AFP"/>
@@ -50,6 +59,31 @@
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="17f-Vj-Rnn">
+                    <connections>
+                        <action selector="didPerformTapGesture:" destination="BYZ-38-t0r" id="rh3-FU-JWj"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <swipeGestureRecognizer direction="left" id="PcU-6C-gnB">
+                    <connections>
+                        <action selector="didPerformSwipeGesture:" destination="BYZ-38-t0r" id="sfB-6Q-QXN"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="right" id="TOo-2k-1nR">
+                    <connections>
+                        <action selector="didPerformSwipeGesture:" destination="BYZ-38-t0r" id="aRr-6a-7F3"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="up" id="xMl-Ip-B67">
+                    <connections>
+                        <action selector="didPerformSwipeGesture:" destination="BYZ-38-t0r" id="O2M-cs-A97"/>
+                    </connections>
+                </swipeGestureRecognizer>
+                <swipeGestureRecognizer direction="down" id="xwt-6Q-zkw">
+                    <connections>
+                        <action selector="didPerformSwipeGesture:" destination="BYZ-38-t0r" id="rks-1K-nZ7"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="288" y="321"/>
         </scene>
