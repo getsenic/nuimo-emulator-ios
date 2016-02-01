@@ -7,14 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		461A133F1C5FBDE6008CEFE0 /* DialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461A133E1C5FBDE6008CEFE0 /* DialView.swift */; };
 		468F30021C591392008D8958 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468F30011C591392008D8958 /* AppDelegate.swift */; };
 		468F30041C591392008D8958 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468F30031C591392008D8958 /* ViewController.swift */; };
 		468F30071C591392008D8958 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 468F30051C591392008D8958 /* Main.storyboard */; };
 		468F30091C591392008D8958 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 468F30081C591392008D8958 /* Assets.xcassets */; };
 		468F300C1C591392008D8958 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 468F300A1C591392008D8958 /* LaunchScreen.storyboard */; };
+		46D3C0FD1C5956430093C14C /* Nuimo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D3C0FC1C5956430093C14C /* Nuimo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		461A133E1C5FBDE6008CEFE0 /* DialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialView.swift; sourceTree = "<group>"; };
 		468F2FFE1C591392008D8958 /* NuimoSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NuimoSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		468F30011C591392008D8958 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		468F30031C591392008D8958 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -55,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				468F30011C591392008D8958 /* AppDelegate.swift */,
+				461A133E1C5FBDE6008CEFE0 /* DialView.swift */,
 				468F30031C591392008D8958 /* ViewController.swift */,
 				468F30051C591392008D8958 /* Main.storyboard */,
 				468F30081C591392008D8958 /* Assets.xcassets */,
@@ -136,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				461A133F1C5FBDE6008CEFE0 /* DialView.swift in Sources */,
 				468F30041C591392008D8958 /* ViewController.swift in Sources */,
 				468F30021C591392008D8958 /* AppDelegate.swift in Sources */,
 			);
@@ -289,6 +294,7 @@
 				468F30121C591392008D8958 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
