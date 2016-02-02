@@ -81,6 +81,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="dialView" destination="D4G-31-vQa" id="ysK-jY-fsP"/>
                         <outlet property="gestureView" destination="To6-OB-W5I" id="nor-hb-Jor"/>
                     </connections>
                 </viewController>

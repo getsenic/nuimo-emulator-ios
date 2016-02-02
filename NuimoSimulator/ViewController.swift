@@ -11,6 +11,7 @@ import UIKit
 class ViewController: UIViewController, DialViewDelegate {
 
     @IBOutlet weak var gestureView: UIView!
+    @IBOutlet weak var dialView: DialView!
 
     @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
         print("TAP")
@@ -18,6 +19,13 @@ class ViewController: UIViewController, DialViewDelegate {
     
     @IBAction func didPerformSwipeGesture(sender: UISwipeGestureRecognizer) {
         print(sender.direction)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        dialView.superview?.layoutSubviews()
+        self.dialView.knobSize = min(dialView.frame.width, dialView.frame.height) / 8.0
+        self.dialView.ringSize = self.dialView.knobSize * 2.0 / 3.0
     }
 
     func dialView(dialView: DialView, didUpdatePosition position: CGFloat) {
