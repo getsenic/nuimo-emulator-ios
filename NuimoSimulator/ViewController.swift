@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, DialViewDelegate {
+
+    @IBOutlet weak var gestureView: UIView!
 
     @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
         print("TAP")
@@ -17,5 +19,16 @@ class ViewController: UIViewController {
     @IBAction func didPerformSwipeGesture(sender: UISwipeGestureRecognizer) {
         print(sender.direction)
     }
-}
 
+    func dialView(dialView: DialView, didUpdatePosition position: CGFloat) {
+        print(position)
+    }
+
+    func dialViewDidStartDragging(dialView: DialView) {
+        gestureView.gestureRecognizers?.forEach { $0.enabled = false }
+    }
+
+    func dialViewDidEndDragging(dialView: DialView) {
+        gestureView.gestureRecognizers?.forEach { $0.enabled = true }
+    }
+}

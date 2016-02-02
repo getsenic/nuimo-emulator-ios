@@ -8,25 +8,98 @@
 
 import UIKit
 
+//TODO: Publish as Cocoa Pod with GIF animation on github showing how the value changes on rotating
 @IBDesignable
-class DialView : UIView {
+public class DialView : UIView {
     @IBInspectable
-    var knobSize: CGFloat = 40.0
+    public var ringColor: UIColor = UIColor(colorLiteralRed: 0.25, green: 0.25, blue: 0.25, alpha: 1.0)
+    @IBInspectable
+    public var knobColor: UIColor = UIColor(colorLiteralRed: 0.75, green: 0.75, blue: 0.75, alpha: 0.5)
+    @IBInspectable
+    public var surfaceColor: UIColor = UIColor(colorLiteralRed: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+    @IBInspectable
+    public var ringSize: CGFloat = 40.0
+    @IBInspectable
+    public var knobSize: CGFloat = 50.0
 
-    private var knobPosition: CGFloat = 0.0
+    @IBInspectable
+    public var position: CGFloat = 0.0 {
+        didSet {
+            guard oldValue != position else { return }
+            self.setNeedsDisplay()
+            self.delegate?.dialView(self, didUpdatePosition: position)
+        }
+    }
 
-    override func drawRect(rect: CGRect) {
+    @IBOutlet
+    public var delegate: DialViewDelegate?
+
+    /// Workaround for Xcode bug that prevents you from connecting the delegate in the storyboard.
+    /// Remove this extra property once Xcode gets fixed.
+    /// See also http://stackoverflow.com/a/35155533/543875
+    @IBOutlet
+    public var ibDelegate: AnyObject? {
+        get { return delegate }
+        set { delegate = newValue as? DialViewDelegate }
+    }
+
+    private var rotationSize: CGFloat { return min(frame.width, frame.height) - max(knobSize, ringSize) }
+
+    private var dragging = false
+
+    public override func drawRect(rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()
-        CGContextAddEllipseInRect(context, rect.insetBy(dx: knobSize / 2.0, dy: knobSize / 2.0))
-        CGContextSetFillColor(context, CGColorGetComponents(UIColor.blueColor().CGColor))
+
+        CGContextAddEllipseInRect(context, rect.insetBy(dx: max(0, knobSize - ringSize) / 2.0, dy: max(0, knobSize - ringSize) / 2.0))
+        CGContextSetFillColor(context, CGColorGetComponents(ringColor.CGColor))
         CGContextFillPath(context)
 
-        let deltaX = sin(CGFloat(Double(knobPosition) * 2.0 * M_PI)) * (rect.width - knobSize) / 2.0
-        let deltaY = cos(CGFloat(Double(knobPosition) * 2.0 * M_PI)) * (rect.height - knobSize) / 2.0
+        CGContextAddEllipseInRect(context, rect.insetBy(dx: (frame.width - rotationSize + ringSize) / 2.0, dy: (frame.height - rotationSize + ringSize) / 2.0))
+        CGContextSetFillColor(context, CGColorGetComponents(surfaceColor.CGColor))
+        CGContextFillPath(context)
 
-        let r = CGRect(x: rect.midX + deltaX - knobSize / 2.0, y: rect.midY - deltaY - knobSize / 2.0, width: knobSize, height: knobSize)
-        CGContextAddEllipseInRect(context, r)
-        CGContextSetFillColor(context, CGColorGetComponents(UIColor.redColor().CGColor))
+        let deltaX = sin(position * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
+        let deltaY = cos(position * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
+
+        CGContextAddEllipseInRect(context, CGRect(x: rect.midX + deltaX - knobSize / 2.0, y: rect.midY - deltaY - knobSize / 2.0, width: knobSize, height: knobSize))
+        CGContextSetFillColor(context, CGColorGetComponents(knobColor.CGColor))
         CGContextFillPath(context)
     }
+
+    public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        dragging = isRingTouch(touches.first!)
+        guard dragging else { return }
+        delegate?.dialViewDidStartDragging?(self)
+        performRotation(touches.first!)
+    }
+
+    public override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        guard dragging else { return }
+        performRotation(touches.first!)
+    }
+
+    public override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        guard dragging else { return }
+        delegate?.dialViewDidEndDragging?(self)
+        dragging = false
+    }
+
+    private func isRingTouch(touch: UITouch) -> Bool {
+        let point = touch.locationInView(self)
+        return sqrt(pow(frame.height / 2.0 - point.y, 2.0) + pow(point.x - frame.width / 2.0, 2.0)) > (rotationSize - max(knobSize, ringSize)) / 2.0
+    }
+
+    private func performRotation(touch: UITouch) {
+        let point = touch.locationInView(self)
+        let pos = atan2(point.x - frame.width / 2.0, frame.height / 2.0 - point.y) / 2.0 / CGFloat(M_PI)
+        position = pos >= 0 ? pos : pos + 1.0
+    }
 }
+
+@objc
+public protocol DialViewDelegate {
+    func dialView(dialView: DialView, didUpdatePosition position: CGFloat)
+    optional func dialViewDidStartDragging(dialView: DialView)
+    optional func dialViewDidEndDragging(dialView: DialView)
+}
+
