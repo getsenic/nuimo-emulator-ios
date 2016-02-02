@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Ib Delegate-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="NuimoSimulator" customModuleProvider="target" sceneMemberID="viewController">
@@ -29,12 +29,8 @@
                                 <rect key="frame" x="20" y="67" width="560" height="513"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4G-31-vQa" customClass="DialView" customModule="NuimoSimulator" customModuleProvider="target">
-                                        <rect key="frame" x="130" y="107" width="300" height="300"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="513"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="300" id="UJi-it-UbK"/>
-                                            <constraint firstAttribute="height" constant="300" id="f5v-DD-NOE"/>
-                                        </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="knobSize">
                                                 <real key="value" value="60"/>
@@ -48,10 +44,12 @@
                                         </connections>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="D4G-31-vQa" firstAttribute="centerY" secondItem="To6-OB-W5I" secondAttribute="centerY" id="TGU-zP-6vu"/>
-                                    <constraint firstItem="D4G-31-vQa" firstAttribute="centerX" secondItem="To6-OB-W5I" secondAttribute="centerX" id="WzG-h3-tzt"/>
+                                    <constraint firstAttribute="trailing" secondItem="D4G-31-vQa" secondAttribute="trailing" id="6lz-Gm-QXt"/>
+                                    <constraint firstItem="D4G-31-vQa" firstAttribute="top" secondItem="To6-OB-W5I" secondAttribute="top" id="7K8-Sg-Ouh"/>
+                                    <constraint firstItem="D4G-31-vQa" firstAttribute="leading" secondItem="To6-OB-W5I" secondAttribute="leading" id="WDS-0Y-vCa"/>
+                                    <constraint firstAttribute="bottom" secondItem="D4G-31-vQa" secondAttribute="bottom" id="qFM-PL-taK"/>
                                 </constraints>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="17f-Vj-Rnn" appends="YES" id="Jh2-yr-e77"/>
