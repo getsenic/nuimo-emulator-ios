@@ -12,15 +12,15 @@ import UIKit
 @IBDesignable
 public class DialView : UIView {
     @IBInspectable
-    public var ringColor: UIColor = UIColor(colorLiteralRed: 0.25, green: 0.25, blue: 0.25, alpha: 1.0)
+    public var ringColor: UIColor = UIColor(colorLiteralRed: 0.25, green: 0.25, blue: 0.25, alpha: 1.0) { didSet { setNeedsDisplay() } }
     @IBInspectable
-    public var knobColor: UIColor = UIColor(colorLiteralRed: 0.75, green: 0.75, blue: 0.75, alpha: 0.5)
+    public var knobColor: UIColor = UIColor(colorLiteralRed: 0.75, green: 0.75, blue: 0.75, alpha: 0.5) { didSet { setNeedsDisplay() } }
     @IBInspectable
-    public var surfaceColor: UIColor = UIColor(colorLiteralRed: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+    public var surfaceColor: UIColor = UIColor(colorLiteralRed: 0.5, green: 0.5, blue: 0.5, alpha: 1.0) { didSet { setNeedsDisplay() } }
     @IBInspectable
-    public var ringSize: CGFloat = 40.0
+    public var ringSize: CGFloat = 40.0 { didSet { setNeedsDisplay() } }
     @IBInspectable
-    public var knobSize: CGFloat = 50.0
+    public var knobSize: CGFloat = 50.0 { didSet { setNeedsDisplay() } }
 
     @IBInspectable
     public var position: CGFloat = 0.0 {
