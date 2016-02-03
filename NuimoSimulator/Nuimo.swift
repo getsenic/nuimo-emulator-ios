@@ -6,20 +6,26 @@
 //  Copyright © 2016 Senic GmbH. All rights reserved.
 //
 
+import Swift
+import Foundation
 import CoreBluetooth
 
 class Nuimo : NSObject, CBPeripheralManagerDelegate {
-    var deviceName = "Nuimo"
+    typealias CanUpdateValue = () -> (Bool)
+    typealias OnValueUpdated = () -> ()
+    typealias OnValueNotUpdated = () -> ()
+
+    private let deviceName = "Nuimo"
+    private let singleRotationValue = 2800
 
     private lazy var peripheral: CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-
     private var on = false
-
     private var characteristicForCharacteristicUUID = [CBUUID : CBMutableCharacteristic]()
-
     private var addedServices = [CBUUID]()
-
-    private var updateQueue = [(CBUUID, [UInt8])]()
+    private var updateQueue = [(CBUUID, [UInt8], CanUpdateValue?, OnValueUpdated?, OnValueNotUpdated?)]()
+    private var rotationValue = 0
+    private var lastRotationEventDate = NSDate()
+    private let maxRotationEventsPerSecond = 10
 
     override init() {
         super.init()
@@ -30,7 +36,6 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         guard !on else { return }
 
         on = true
-
         reset()
 
         // Add services
@@ -51,13 +56,13 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         guard on else { return }
 
         on = false
-
         reset()
 
         //TODO: Hot to cut off existing connections?
     }
 
     private func reset() {
+        rotationValue = 0
         updateQueue.removeAll()
         peripheral.stopAdvertising()
         peripheral.removeAllServices()
@@ -86,11 +91,39 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         updateValue([UInt8(direction.rawValue)], forCharacteristicUUID: sensorTouchCharacteristicUUID)
     }
 
-    private func updateValue(value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID) {
+    func rotate(delta: Double) {
+        let value = Int16(Double(singleRotationValue) * delta)
+        guard value != 0 else { return }
+        updateValue([UInt8(truncatingBitPattern: value), UInt8(truncatingBitPattern: value >> 8)], forCharacteristicUUID: sensorRotationCharacteristicUUID,
+            canUpdate: {
+                return Int(1.0 / -self.lastRotationEventDate.timeIntervalSinceNow) <= self.maxRotationEventsPerSecond
+            },
+            onUpdated: {
+                self.rotationValue = 0
+                self.lastRotationEventDate = NSDate()
+            },
+            onNotUpdated: {
+                self.rotationValue += Int(value)
+            })
+    }
+
+    private func updateValue(value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID, canUpdate: CanUpdateValue? = nil, onUpdated: OnValueUpdated? = nil, onNotUpdated: OnValueNotUpdated? = nil) {
         guard let characteristic = characteristicForCharacteristicUUID[characteristicUUID] where on else { return }
+
+        if let canUpdate = canUpdate {
+            guard canUpdate() else {
+                onNotUpdated?()
+                return
+            }
+        }
+
         let didSendValue = peripheral.updateValue(NSData(bytes: value, length: value.count), forCharacteristic: characteristic, onSubscribedCentrals: nil)
-        if !didSendValue {
-            updateQueue.append((characteristicUUID, value))
+        if didSendValue {
+            onUpdated?()
+        }
+        else {
+            onNotUpdated?()
+            updateQueue.append((characteristicUUID, value, canUpdate, onUpdated, onNotUpdated))
         }
     }
 
@@ -163,8 +196,8 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
 
     func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
         while updateQueue.count > 0 {
-            let (characteristicUUID, value) = updateQueue.removeFirst()
-            updateValue(value, forCharacteristicUUID: characteristicUUID)
+            let (characteristicUUID, value, canUpdate, onUpdated, onNotUpdated) = updateQueue.removeFirst()
+            updateValue(value, forCharacteristicUUID: characteristicUUID, canUpdate: canUpdate, onUpdated: onUpdated, onNotUpdated: onNotUpdated)
         }
     }
 }

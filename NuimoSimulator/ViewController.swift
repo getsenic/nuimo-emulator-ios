@@ -13,7 +13,9 @@ class ViewController: UIViewController, DialViewDelegate {
     @IBOutlet weak var gestureView: UIView!
     @IBOutlet weak var dialView: DialView!
 
-    var nuimo = Nuimo()
+    private var nuimo = Nuimo()
+    private var previousDialPosition: CGFloat = 0.0
+    private var isFirstDragPosition = false
 
     @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
         nuimo.pressButton()
@@ -39,11 +41,25 @@ class ViewController: UIViewController, DialViewDelegate {
     }
 
     func dialView(dialView: DialView, didUpdatePosition position: CGFloat) {
-        print(position)
+        defer { isFirstDragPosition = false }
+        guard previousDialPosition != position else { return }
+        guard !isFirstDragPosition else { return }
+
+        var delta = Double(position - previousDialPosition)
+        if delta > 0.5 {
+            delta = 1 - delta
+        }
+        else if delta < -0.5 {
+            delta = 1 + delta
+        }
+        nuimo.rotate(delta)
+        previousDialPosition = position
     }
 
     func dialViewDidStartDragging(dialView: DialView) {
         gestureView.gestureRecognizers?.forEach { $0.enabled = false }
+        previousDialPosition = dialView.position
+        isFirstDragPosition = true
     }
 
     func dialViewDidEndDragging(dialView: DialView) {
