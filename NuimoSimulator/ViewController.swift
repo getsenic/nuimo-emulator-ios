@@ -13,6 +13,8 @@ class ViewController: UIViewController, DialViewDelegate {
     @IBOutlet weak var gestureView: UIView!
     @IBOutlet weak var dialView: DialView!
 
+    var nuimo = Nuimo()
+
     @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
         print("TAP")
     }
@@ -26,6 +28,12 @@ class ViewController: UIViewController, DialViewDelegate {
         dialView.superview?.layoutSubviews()
         self.dialView.knobSize = min(dialView.frame.width, dialView.frame.height) / 8.0
         self.dialView.ringSize = self.dialView.knobSize * 2.0 / 3.0
+    }
+
+    @IBAction func onOffSwitchDidChangeValue(sender: UISwitch) {
+        sender.on
+            ? nuimo.powerOn()
+            : nuimo.powerOff()
     }
 
     func dialView(dialView: DialView, didUpdatePosition position: CGFloat) {

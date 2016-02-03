@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		461A133F1C5FBDE6008CEFE0 /* DialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461A133E1C5FBDE6008CEFE0 /* DialView.swift */; };
+		4644A9601C61049D008E4206 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4644A95F1C61049D008E4206 /* Then.swift */; };
 		468F30021C591392008D8958 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468F30011C591392008D8958 /* AppDelegate.swift */; };
 		468F30041C591392008D8958 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468F30031C591392008D8958 /* ViewController.swift */; };
 		468F30071C591392008D8958 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 468F30051C591392008D8958 /* Main.storyboard */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		461A133E1C5FBDE6008CEFE0 /* DialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialView.swift; sourceTree = "<group>"; };
+		4644A95F1C61049D008E4206 /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
 		468F2FFE1C591392008D8958 /* NuimoSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NuimoSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		468F30011C591392008D8958 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		468F30031C591392008D8958 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -25,6 +27,7 @@
 		468F30081C591392008D8958 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		468F300B1C591392008D8958 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		468F300D1C591392008D8958 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		46D3C0FC1C5956430093C14C /* Nuimo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nuimo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,11 +62,13 @@
 			children = (
 				468F30011C591392008D8958 /* AppDelegate.swift */,
 				461A133E1C5FBDE6008CEFE0 /* DialView.swift */,
+				46D3C0FC1C5956430093C14C /* Nuimo.swift */,
+				4644A95F1C61049D008E4206 /* Then.swift */,
 				468F30031C591392008D8958 /* ViewController.swift */,
-				468F30051C591392008D8958 /* Main.storyboard */,
 				468F30081C591392008D8958 /* Assets.xcassets */,
-				468F300A1C591392008D8958 /* LaunchScreen.storyboard */,
+				468F30051C591392008D8958 /* Main.storyboard */,
 				468F300D1C591392008D8958 /* Info.plist */,
+				468F300A1C591392008D8958 /* LaunchScreen.storyboard */,
 			);
 			path = NuimoSimulator;
 			sourceTree = "<group>";
@@ -143,6 +148,8 @@
 				461A133F1C5FBDE6008CEFE0 /* DialView.swift in Sources */,
 				468F30041C591392008D8958 /* ViewController.swift in Sources */,
 				468F30021C591392008D8958 /* AppDelegate.swift in Sources */,
+				4644A9601C61049D008E4206 /* Then.swift in Sources */,
+				46D3C0FD1C5956430093C14C /* Nuimo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

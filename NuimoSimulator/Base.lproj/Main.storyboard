@@ -59,12 +59,15 @@
                                     <outletCollection property="gestureRecognizers" destination="TOo-2k-1nR" appends="YES" id="Kvi-lj-mpU"/>
                                 </connections>
                             </view>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="37w-ee-gqh">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="37w-ee-gqh">
                                 <rect key="frame" x="531" y="28" width="51" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="49" id="NDy-Am-kwc"/>
                                     <constraint firstAttribute="height" constant="31" id="oYE-fq-KrL"/>
                                 </constraints>
+                                <connections>
+                                    <action selector="onOffSwitchDidChangeValue:" destination="BYZ-38-t0r" eventType="valueChanged" id="uKz-lW-0fO"/>
+                                </connections>
                             </switch>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
