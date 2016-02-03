@@ -27,8 +27,9 @@ class ViewController: UIViewController, DialViewDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         dialView.superview?.layoutSubviews()
-        self.dialView.knobSize = min(dialView.frame.width, dialView.frame.height) / 8.0
-        self.dialView.ringSize = self.dialView.knobSize * 2.0 / 3.0
+        self.dialView.ringSize = min(dialView.frame.width, dialView.frame.height) / 10.0
+        self.dialView.knobSize = self.dialView.ringSize * 3.0 / 2.0
+
     }
 
     @IBAction func onOffSwitchDidChangeValue(sender: UISwitch) {
