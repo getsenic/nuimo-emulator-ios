@@ -9,7 +9,7 @@
 import CoreBluetooth
 
 class Nuimo : NSObject, CBPeripheralManagerDelegate {
-    var deviceName = "Nuimo2"
+    var deviceName = "Nuimo"
 
     private lazy var peripheral: CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
 
@@ -18,6 +18,8 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     private var characteristicForCharacteristicUUID = [CBUUID : CBMutableCharacteristic]()
 
     private var addedServices = [CBUUID]()
+
+    private var updateQueue = [(CBUUID, [UInt8])]()
 
     override init() {
         super.init()
@@ -56,6 +58,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     }
 
     private func reset() {
+        updateQueue.removeAll()
         peripheral.stopAdvertising()
         peripheral.removeAllServices()
         addedServices.removeAll()
@@ -72,16 +75,23 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     //MARK: User input
 
     func pressButton() {
-        updateButtonPressed(true)
+        updateValue([1], forCharacteristicUUID: sensorButtonCharacteristicUUID)
     }
 
     func releaseButton() {
-        updateButtonPressed(false)
+        updateValue([0], forCharacteristicUUID: sensorButtonCharacteristicUUID)
     }
 
-    private func updateButtonPressed(pressed: Bool) {
-        let bytes = [pressed ? 1 : 0]
-        peripheral.updateValue(NSData(bytes: bytes, length: bytes.count), forCharacteristic: characteristicForCharacteristicUUID[sensorButtonCharacteristicUUID]!, onSubscribedCentrals: nil)
+    func swipe(direction: NuimoSwipeDirection) {
+        updateValue([UInt8(direction.rawValue)], forCharacteristicUUID: sensorTouchCharacteristicUUID)
+    }
+
+    private func updateValue(value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID) {
+        guard let characteristic = characteristicForCharacteristicUUID[characteristicUUID] where on else { return }
+        let didSendValue = peripheral.updateValue(NSData(bytes: value, length: value.count), forCharacteristic: characteristic, onSubscribedCentrals: nil)
+        if !didSendValue {
+            updateQueue.append((characteristicUUID, value))
+        }
     }
 
     //MARK: CBPeripheralManagerDelegate
@@ -152,9 +162,18 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     }
 
     func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
-        //TODO: What do we need to do here?
-        print("peripheralManagerIsReadyToUpdateSubscribers")
+        while updateQueue.count > 0 {
+            let (characteristicUUID, value) = updateQueue.removeFirst()
+            updateValue(value, forCharacteristicUUID: characteristicUUID)
+        }
     }
+}
+
+enum NuimoSwipeDirection: Int {
+    case Left = 0
+    case Right = 1
+    case Up = 2
+    case Down = 3
 }
 
 private let genericAccessServiceUUID                      = CBUUID(string: "1800")

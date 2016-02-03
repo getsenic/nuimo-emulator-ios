@@ -16,11 +16,12 @@ class ViewController: UIViewController, DialViewDelegate {
     var nuimo = Nuimo()
 
     @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
-        print("TAP")
+        nuimo.pressButton()
+        nuimo.releaseButton()
     }
     
     @IBAction func didPerformSwipeGesture(sender: UISwipeGestureRecognizer) {
-        print(sender.direction)
+        nuimo.swipe(NuimoSwipeDirection(swipeDirection: sender.direction))
     }
 
     override func viewDidLayoutSubviews() {
@@ -47,4 +48,21 @@ class ViewController: UIViewController, DialViewDelegate {
     func dialViewDidEndDragging(dialView: DialView) {
         gestureView.gestureRecognizers?.forEach { $0.enabled = true }
     }
+}
+
+extension NuimoSwipeDirection {
+    private static let map: [UISwipeGestureRecognizerDirection : NuimoSwipeDirection] = [
+        .Left  : .Left,
+        .Right : .Right,
+        .Up    : .Up,
+        .Down  : .Down
+    ]
+
+    init(swipeDirection: UISwipeGestureRecognizerDirection) {
+        self = NuimoSwipeDirection.map[swipeDirection]!
+    }
+}
+
+extension UISwipeGestureRecognizerDirection : Hashable {
+    public var hashValue: Int { get { return Int(self.rawValue) } }
 }
