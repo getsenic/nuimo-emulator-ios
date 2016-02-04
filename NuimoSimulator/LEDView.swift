@@ -35,7 +35,7 @@ public class LEDView : UIView {
 
         (0..<rows).forEach { row in
             (0..<columns).forEach { col in
-                CGContextAddEllipseInRect(context, CGRect(x: CGFloat(col) * (ledSize + horzSpace), y: CGFloat(row) * (ledSize + vertSpace), width: ledSize, height: ledSize))
+                CGContextAddEllipseInRect(context, CGRect(x: CGFloat(col) * (ledSize + horzSpace), y: CGFloat(row) * (ledSize + vertSpace), width: ledSize - 1, height: ledSize - 1))
                 let ledIndex = row * columns + col
                 let color: UIColor = ledIndex < leds.count ? (leds[ledIndex] ? onColor : offColor) : offColor
                 CGContextSetFillColor(context, CGColorGetComponents(color.CGColor))
