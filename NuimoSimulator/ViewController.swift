@@ -20,15 +20,6 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     private var previousDialPosition: CGFloat = 0.0
     private var isFirstDragPosition = false
 
-    @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
-        nuimo.pressButton()
-        nuimo.releaseButton()
-    }
-    
-    @IBAction func didPerformSwipeGesture(sender: UISwipeGestureRecognizer) {
-        nuimo.swipe(NuimoSwipeDirection(swipeDirection: sender.direction))
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         dialView.superview?.layoutSubviews()
@@ -41,6 +32,15 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
         ledViewWidthLayoutConstraint.constant = ledViewSize
         ledViewHeightLayoutConstraint.constant = ledViewSize
         ledView.setNeedsLayout()
+    }
+
+    @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
+        nuimo.pressButton()
+        nuimo.releaseButton()
+    }
+    
+    @IBAction func didPerformSwipeGesture(sender: UISwipeGestureRecognizer) {
+        nuimo.swipe(NuimoSwipeDirection(swipeDirection: sender.direction))
     }
 
     @IBAction func onOffSwitchDidChangeValue(sender: UISwitch) {
