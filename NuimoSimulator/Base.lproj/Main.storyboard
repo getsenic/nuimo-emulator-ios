@@ -30,7 +30,38 @@
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4G-31-vQa" customClass="DialView" customModule="NuimoSimulator" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="513"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0s4-8z-yoD" customClass="LEDView" customModule="NuimoSimulator" customModuleProvider="target">
+                                                <rect key="frame" x="205" y="182" width="150" height="150"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="150" id="DF7-Hn-Mt2"/>
+                                                    <constraint firstAttribute="height" constant="150" id="FeL-jN-y2w"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="columns">
+                                                        <integer key="value" value="9"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="rows">
+                                                        <integer key="value" value="9"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="ledSize">
+                                                        <real key="value" value="12"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="onColor">
+                                                        <color key="value" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="offColor">
+                                                        <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                        </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstItem="0s4-8z-yoD" firstAttribute="centerY" secondItem="D4G-31-vQa" secondAttribute="centerY" id="qAz-QN-EiH"/>
+                                            <constraint firstItem="0s4-8z-yoD" firstAttribute="centerX" secondItem="D4G-31-vQa" secondAttribute="centerX" id="t3B-Vh-ofH"/>
+                                        </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="knobSize">
                                                 <real key="value" value="60"/>
@@ -86,6 +117,9 @@
                     <connections>
                         <outlet property="dialView" destination="D4G-31-vQa" id="ysK-jY-fsP"/>
                         <outlet property="gestureView" destination="To6-OB-W5I" id="nor-hb-Jor"/>
+                        <outlet property="ledView" destination="0s4-8z-yoD" id="lwO-Ud-e9B"/>
+                        <outlet property="ledViewHeightLayoutConstraint" destination="FeL-jN-y2w" id="9CN-t1-gQn"/>
+                        <outlet property="ledViewWidthLayoutConstraint" destination="DF7-Hn-Mt2" id="kW5-8i-LJI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

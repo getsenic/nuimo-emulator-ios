@@ -14,6 +14,7 @@
 		468F30071C591392008D8958 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 468F30051C591392008D8958 /* Main.storyboard */; };
 		468F30091C591392008D8958 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 468F30081C591392008D8958 /* Assets.xcassets */; };
 		468F300C1C591392008D8958 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 468F300A1C591392008D8958 /* LaunchScreen.storyboard */; };
+		4692A9511C63885E004B57FB /* LEDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4692A9501C63885E004B57FB /* LEDView.swift */; };
 		46D3C0FD1C5956430093C14C /* Nuimo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D3C0FC1C5956430093C14C /* Nuimo.swift */; };
 /* End PBXBuildFile section */
 
@@ -27,6 +28,7 @@
 		468F30081C591392008D8958 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		468F300B1C591392008D8958 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		468F300D1C591392008D8958 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4692A9501C63885E004B57FB /* LEDView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LEDView.swift; sourceTree = "<group>"; };
 		46D3C0FC1C5956430093C14C /* Nuimo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nuimo.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -62,6 +64,7 @@
 			children = (
 				468F30011C591392008D8958 /* AppDelegate.swift */,
 				461A133E1C5FBDE6008CEFE0 /* DialView.swift */,
+				4692A9501C63885E004B57FB /* LEDView.swift */,
 				46D3C0FC1C5956430093C14C /* Nuimo.swift */,
 				4644A95F1C61049D008E4206 /* Then.swift */,
 				468F30031C591392008D8958 /* ViewController.swift */,
@@ -147,6 +150,7 @@
 			files = (
 				461A133F1C5FBDE6008CEFE0 /* DialView.swift in Sources */,
 				468F30041C591392008D8958 /* ViewController.swift in Sources */,
+				4692A9511C63885E004B57FB /* LEDView.swift in Sources */,
 				468F30021C591392008D8958 /* AppDelegate.swift in Sources */,
 				4644A9601C61049D008E4206 /* Then.swift in Sources */,
 				46D3C0FD1C5956430093C14C /* Nuimo.swift in Sources */,

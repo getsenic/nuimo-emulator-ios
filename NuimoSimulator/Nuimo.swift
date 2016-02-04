@@ -173,16 +173,16 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
                     break
                 }
                 let bytes = UnsafePointer<UInt8>(data.bytes)
-                let bits: [Bit] = (0...10).flatMap { i -> [Bit] in
+                let leds: [Bool] = (0...10).flatMap { i -> [Bool] in
                     let byte = bytes[i]
-                    return (0...7).map { (1 << (7 - $0)) & byte == 0 ? .Zero : .One }
+                    return (0...7).map { (1 << $0) & byte > 0 }
                 }
                 let brightness = Double(bytes.advancedBy(11).memory) / 255.0
                 let duration = Double(bytes.advancedBy(12).memory) * 10.0
 
                 peripheral.respondToRequest(request, withResult: .Success)
 
-                delegate?.nuimo(self, didReceiveLEDMatrix: NuimoLEDMatrix(leds: bits, brightness: brightness, duration: duration))
+                delegate?.nuimo(self, didReceiveLEDMatrix: NuimoLEDMatrix(leds: leds, brightness: brightness, duration: duration))
             default:
                 peripheral.respondToRequest(request, withResult: .RequestNotSupported)
             }
@@ -217,7 +217,7 @@ protocol NuimoDelegate {
 }
 
 struct NuimoLEDMatrix {
-    var leds: [Bit]
+    var leds: [Bool]
     var brightness: Double
     var duration: Double
 }

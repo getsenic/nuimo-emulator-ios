@@ -12,6 +12,9 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
 
     @IBOutlet weak var gestureView: UIView!
     @IBOutlet weak var dialView: DialView!
+    @IBOutlet weak var ledView: LEDView!
+    @IBOutlet weak var ledViewWidthLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var ledViewHeightLayoutConstraint: NSLayoutConstraint!
 
     private lazy var nuimo: Nuimo = Nuimo().then{ $0.delegate = self }
     private var previousDialPosition: CGFloat = 0.0
@@ -32,6 +35,13 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
         self.dialView.ringSize = min(dialView.frame.width, dialView.frame.height) / 10.0
         self.dialView.knobSize = self.dialView.ringSize * 3.0 / 2.0
 
+
+        let ledViewSize = min(dialView.frame.width, dialView.frame.height) * 0.25
+        ledView.superview?.layoutSubviews()
+        ledView.ledSize = ledViewSize * 0.09
+        ledViewWidthLayoutConstraint.constant = ledViewSize
+        ledViewHeightLayoutConstraint.constant = ledViewSize
+        ledView.setNeedsLayout()
     }
 
     @IBAction func onOffSwitchDidChangeValue(sender: UISwitch) {
@@ -72,7 +82,8 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
 
     //MARK: NuimoDelegate
     func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix) {
-        print(ledMatrix.leds, ledMatrix.brightness, ledMatrix.duration)
+        ledView.leds = ledMatrix.leds
+        //TODO: Apply brightness and duration
     }
 }
 
