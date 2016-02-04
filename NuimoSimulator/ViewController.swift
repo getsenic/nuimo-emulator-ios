@@ -41,7 +41,10 @@ class ViewController: UIViewController, DialViewDelegate {
     }
 
     func dialView(dialView: DialView, didUpdatePosition position: CGFloat) {
-        defer { isFirstDragPosition = false }
+        defer {
+            isFirstDragPosition = false
+            previousDialPosition = position
+        }
         guard previousDialPosition != position else { return }
         guard !isFirstDragPosition else { return }
 
@@ -53,7 +56,6 @@ class ViewController: UIViewController, DialViewDelegate {
             delta = 1 + delta
         }
         nuimo.rotate(delta)
-        previousDialPosition = position
     }
 
     func dialViewDidStartDragging(dialView: DialView) {
