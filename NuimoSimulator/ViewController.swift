@@ -44,9 +44,19 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     }
 
     @IBAction func onOffSwitchDidChangeValue(sender: UISwitch) {
-        sender.on
-            ? nuimo.powerOn()
-            : nuimo.powerOff()
+        if sender.on {
+            nuimo.powerOn()
+            displayLEDMatrix(NuimoLEDMatrix.powerOn)
+        }
+        else {
+            nuimo.powerOff()
+            ledView.leds = []
+        }
+    }
+
+    private func displayLEDMatrix(matrix: NuimoLEDMatrix) {
+        ledView.leds = matrix.leds
+        //TODO: Apply brightness and duration
     }
 
     //MARK: DialViewDelegate
@@ -81,8 +91,7 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
 
     //MARK: NuimoDelegate
     func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix) {
-        ledView.leds = ledMatrix.leds
-        //TODO: Apply brightness and duration
+        displayLEDMatrix(ledMatrix)
     }
 }
 
@@ -101,4 +110,18 @@ extension NuimoSwipeDirection {
 
 extension UISwipeGestureRecognizerDirection : Hashable {
     public var hashValue: Int { get { return Int(self.rawValue) } }
+}
+
+extension NuimoLEDMatrix {
+    static let powerOn = NuimoLEDMatrix(leds: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 0, 1, 1, 0, 0,
+        0, 1, 1, 1, 1, 1, 1, 1, 0,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1,
+        0, 1, 1, 1, 1, 1, 1, 1, 0,
+        0, 0, 1, 1, 1, 1, 1, 0, 0,
+        0, 0, 0, 1, 1, 1, 0, 0, 0,
+        0, 0, 0, 0, 1, 0, 0, 0, 0
+        ].map{ $0 > 0 }, brightness: 1.0, duration: 2.0)
 }
