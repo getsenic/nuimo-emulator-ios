@@ -22,8 +22,8 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     private var on = false
     private var characteristicForCharacteristicUUID = [CBUUID : CBMutableCharacteristic]()
     private var addedServices = [CBUUID]()
-    private var updateQueue = [(CBUUID, [UInt8], CanUpdateValue?, OnValueUpdated?, OnValueNotUpdated?)]()
-    private var rotationValue = 0
+    private var updateQueue = [(CBUUID, [UInt8])]()
+    private var accumulatedRotationDelta = 0.0
     private var lastRotationEventDate = NSDate()
     private let maxRotationEventsPerSecond = 10
 
@@ -62,7 +62,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     }
 
     private func reset() {
-        rotationValue = 0
+        accumulatedRotationDelta = 0.0
         updateQueue.removeAll()
         peripheral.stopAdvertising()
         peripheral.removeAllServices()
@@ -92,39 +92,27 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     }
 
     func rotate(delta: Double) {
-        let value = Int16(Double(singleRotationValue) * delta)
-        guard value != 0 else { return }
-        updateValue([UInt8(truncatingBitPattern: value), UInt8(truncatingBitPattern: value >> 8)], forCharacteristicUUID: sensorRotationCharacteristicUUID,
-            canUpdate: {
-                return Int(1.0 / -self.lastRotationEventDate.timeIntervalSinceNow) <= self.maxRotationEventsPerSecond
-            },
-            onUpdated: {
-                self.rotationValue = 0
-                self.lastRotationEventDate = NSDate()
-            },
-            onNotUpdated: {
-                self.rotationValue += Int(value)
-            })
+        accumulatedRotationDelta += delta
+
+        guard accumulatedRotationDelta != 0 else { return }
+        guard Int(1.0 / -lastRotationEventDate.timeIntervalSinceNow) <= maxRotationEventsPerSecond else { return }
+
+        let accumulatedRotationValue = Int16(Double(singleRotationValue) * accumulatedRotationDelta)
+        let didSendValue = updateValue([UInt8(truncatingBitPattern: accumulatedRotationValue), UInt8(truncatingBitPattern: accumulatedRotationValue >> 8)], forCharacteristicUUID: sensorRotationCharacteristicUUID, autoQueueIfNotSend: false)
+        if didSendValue {
+            accumulatedRotationDelta = 0.0
+            lastRotationEventDate = NSDate()
+        }
     }
 
-    private func updateValue(value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID, canUpdate: CanUpdateValue? = nil, onUpdated: OnValueUpdated? = nil, onNotUpdated: OnValueNotUpdated? = nil) {
-        guard let characteristic = characteristicForCharacteristicUUID[characteristicUUID] where on else { return }
-
-        if let canUpdate = canUpdate {
-            guard canUpdate() else {
-                onNotUpdated?()
-                return
-            }
-        }
+    private func updateValue(value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID, autoQueueIfNotSend: Bool = true) -> Bool {
+        guard let characteristic = characteristicForCharacteristicUUID[characteristicUUID] where on else { return false }
 
         let didSendValue = peripheral.updateValue(NSData(bytes: value, length: value.count), forCharacteristic: characteristic, onSubscribedCentrals: nil)
-        if didSendValue {
-            onUpdated?()
+        if !didSendValue && autoQueueIfNotSend {
+            updateQueue.append((characteristicUUID, value))
         }
-        else {
-            onNotUpdated?()
-            updateQueue.append((characteristicUUID, value, canUpdate, onUpdated, onNotUpdated))
-        }
+        return didSendValue
     }
 
     //MARK: CBPeripheralManagerDelegate
@@ -196,8 +184,8 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
 
     func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
         while updateQueue.count > 0 {
-            let (characteristicUUID, value, canUpdate, onUpdated, onNotUpdated) = updateQueue.removeFirst()
-            updateValue(value, forCharacteristicUUID: characteristicUUID, canUpdate: canUpdate, onUpdated: onUpdated, onNotUpdated: onNotUpdated)
+            let (characteristicUUID, value) = updateQueue.removeFirst()
+            updateValue(value, forCharacteristicUUID: characteristicUUID, autoQueueIfNotSend: true)
         }
     }
 }
