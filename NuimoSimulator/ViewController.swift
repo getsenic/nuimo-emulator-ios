@@ -32,9 +32,8 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         dialView.superview?.layoutSubviews()
-        self.dialView.ringSize = min(dialView.frame.width, dialView.frame.height) / 10.0
-        self.dialView.knobSize = self.dialView.ringSize * 3.0 / 2.0
-
+        dialView.ringSize = min(dialView.frame.width, dialView.frame.height) * 0.1
+        dialView.knobSize = self.dialView.ringSize * 1.5
 
         let ledViewSize = min(dialView.frame.width, dialView.frame.height) * 0.25
         ledView.superview?.layoutSubviews()
