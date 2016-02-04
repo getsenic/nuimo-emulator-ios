@@ -8,12 +8,12 @@
 
 import UIKit
 
-class ViewController: UIViewController, DialViewDelegate {
+class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
 
     @IBOutlet weak var gestureView: UIView!
     @IBOutlet weak var dialView: DialView!
 
-    private var nuimo = Nuimo()
+    private lazy var nuimo: Nuimo = Nuimo().then{ $0.delegate = self }
     private var previousDialPosition: CGFloat = 0.0
     private var isFirstDragPosition = false
 
@@ -39,6 +39,8 @@ class ViewController: UIViewController, DialViewDelegate {
             ? nuimo.powerOn()
             : nuimo.powerOff()
     }
+
+    //MARK: DialViewDelegate
 
     func dialView(dialView: DialView, didUpdatePosition position: CGFloat) {
         defer {
@@ -66,6 +68,11 @@ class ViewController: UIViewController, DialViewDelegate {
 
     func dialViewDidEndDragging(dialView: DialView) {
         gestureView.gestureRecognizers?.forEach { $0.enabled = true }
+    }
+
+    //MARK: NuimoDelegate
+    func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix) {
+        print(ledMatrix.leds, ledMatrix.brightness, ledMatrix.duration)
     }
 }
 

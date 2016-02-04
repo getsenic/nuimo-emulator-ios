@@ -15,6 +15,8 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     typealias OnValueUpdated = () -> ()
     typealias OnValueNotUpdated = () -> ()
 
+    var delegate: NuimoDelegate?
+
     private let deviceName = "Nuimo"
     private let singleRotationValue = 2800
 
@@ -166,8 +168,21 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         requests.forEach { request in
             switch request.characteristic.UUID {
             case ledMatrixCharacteristicUUID:
-                //TODO: Send matrix as bit array to some new delegate
+                guard let data = request.value where data.length == 13 else {
+                    peripheral.respondToRequest(request, withResult: .InvalidAttributeValueLength)
+                    break
+                }
+                let bytes = UnsafePointer<UInt8>(data.bytes)
+                let bits: [Bit] = (0...10).flatMap { i -> [Bit] in
+                    let byte = bytes[i]
+                    return (0...7).map { (1 << (7 - $0)) & byte == 0 ? .Zero : .One }
+                }
+                let brightness = Double(bytes.advancedBy(11).memory) / 255.0
+                let duration = Double(bytes.advancedBy(12).memory) * 10.0
+
                 peripheral.respondToRequest(request, withResult: .Success)
+
+                delegate?.nuimo(self, didReceiveLEDMatrix: NuimoLEDMatrix(leds: bits, brightness: brightness, duration: duration))
             default:
                 peripheral.respondToRequest(request, withResult: .RequestNotSupported)
             }
@@ -196,6 +211,18 @@ enum NuimoSwipeDirection: Int {
     case Up = 2
     case Down = 3
 }
+
+protocol NuimoDelegate {
+    func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix)
+}
+
+struct NuimoLEDMatrix {
+    var leds: [Bit]
+    var brightness: Double
+    var duration: Double
+}
+
+//MARK: Nuimo GATT specification
 
 private let genericAccessServiceUUID                      = CBUUID(string: "1800")
 private let genericAccessDeviceNameCharacteristicUUID     = CBUUID(string: "2A00")
