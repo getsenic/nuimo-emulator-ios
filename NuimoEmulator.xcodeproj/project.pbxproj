@@ -21,7 +21,7 @@
 /* Begin PBXFileReference section */
 		461A133E1C5FBDE6008CEFE0 /* DialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialView.swift; sourceTree = "<group>"; };
 		4644A95F1C61049D008E4206 /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
-		468F2FFE1C591392008D8958 /* NuimoSimulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NuimoSimulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		468F2FFE1C591392008D8958 /* NuimoEmulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NuimoEmulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		468F30011C591392008D8958 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		468F30031C591392008D8958 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		468F30061C591392008D8958 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -46,7 +46,7 @@
 		468F2FF51C591391008D8958 = {
 			isa = PBXGroup;
 			children = (
-				468F30001C591392008D8958 /* NuimoSimulator */,
+				468F30001C591392008D8958 /* NuimoEmulator */,
 				468F2FFF1C591392008D8958 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,12 +54,12 @@
 		468F2FFF1C591392008D8958 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				468F2FFE1C591392008D8958 /* NuimoSimulator.app */,
+				468F2FFE1C591392008D8958 /* NuimoEmulator.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		468F30001C591392008D8958 /* NuimoSimulator */ = {
+		468F30001C591392008D8958 /* NuimoEmulator */ = {
 			isa = PBXGroup;
 			children = (
 				468F30011C591392008D8958 /* AppDelegate.swift */,
@@ -73,15 +73,15 @@
 				468F300D1C591392008D8958 /* Info.plist */,
 				468F300A1C591392008D8958 /* LaunchScreen.storyboard */,
 			);
-			path = NuimoSimulator;
+			path = NuimoEmulator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		468F2FFD1C591391008D8958 /* NuimoSimulator */ = {
+		468F2FFD1C591391008D8958 /* NuimoEmulator */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 468F30101C591392008D8958 /* Build configuration list for PBXNativeTarget "NuimoSimulator" */;
+			buildConfigurationList = 468F30101C591392008D8958 /* Build configuration list for PBXNativeTarget "NuimoEmulator" */;
 			buildPhases = (
 				468F2FFA1C591391008D8958 /* Sources */,
 				468F2FFB1C591391008D8958 /* Frameworks */,
@@ -91,9 +91,9 @@
 			);
 			dependencies = (
 			);
-			name = NuimoSimulator;
+			name = NuimoEmulator;
 			productName = NuimoSimulator;
-			productReference = 468F2FFE1C591392008D8958 /* NuimoSimulator.app */;
+			productReference = 468F2FFE1C591392008D8958 /* NuimoEmulator.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -112,7 +112,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 468F2FF91C591391008D8958 /* Build configuration list for PBXProject "NuimoSimulator" */;
+			buildConfigurationList = 468F2FF91C591391008D8958 /* Build configuration list for PBXProject "NuimoEmulator" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -125,7 +125,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				468F2FFD1C591391008D8958 /* NuimoSimulator */,
+				468F2FFD1C591391008D8958 /* NuimoEmulator */,
 			);
 		};
 /* End PBXProject section */
@@ -267,10 +267,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				INFOPLIST_FILE = NuimoSimulator/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/NuimoEmulator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.senic.nuimosimulator;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.senic.nuimoemulator;
+				PRODUCT_NAME = NuimoEmulator;
 			};
 			name = Debug;
 		};
@@ -279,17 +279,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				INFOPLIST_FILE = NuimoSimulator/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/NuimoEmulator/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.senic.nuimosimulator;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.senic.nuimoemulator;
+				PRODUCT_NAME = NuimoEmulator;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		468F2FF91C591391008D8958 /* Build configuration list for PBXProject "NuimoSimulator" */ = {
+		468F2FF91C591391008D8958 /* Build configuration list for PBXProject "NuimoEmulator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				468F300E1C591392008D8958 /* Debug */,
@@ -298,7 +298,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		468F30101C591392008D8958 /* Build configuration list for PBXNativeTarget "NuimoSimulator" */ = {
+		468F30101C591392008D8958 /* Build configuration list for PBXNativeTarget "NuimoEmulator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				468F30111C591392008D8958 /* Debug */,
