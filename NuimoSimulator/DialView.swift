@@ -54,19 +54,19 @@ public class DialView : UIView {
 
         // Draw outer circle = ring
         let x = max(0, knobSize - ringSize)
-        CGContextAddEllipseInRect(context, CGRect(x: (rect.width - size + x) / 2.0, y: (rect.height - size + x) / 2.0, width: size - x, height: size - x))
+        CGContextAddEllipseInRect(context, CGRect(x: (bounds.width - size + x) / 2.0, y: (bounds.height - size + x) / 2.0, width: size - x, height: size - x))
         CGContextSetFillColor(context, CGColorGetComponents(ringColor.CGColor))
         CGContextFillPath(context)
 
         // Draw inner circle = surface
-        CGContextAddEllipseInRect(context, rect.insetBy(dx: (frame.width - rotationSize + ringSize) / 2.0, dy: (frame.height - rotationSize + ringSize) / 2.0))
+        CGContextAddEllipseInRect(context, bounds.insetBy(dx: (frame.width - rotationSize + ringSize) / 2.0, dy: (frame.height - rotationSize + ringSize) / 2.0))
         CGContextSetFillColor(context, CGColorGetComponents(surfaceColor.CGColor))
         CGContextFillPath(context)
 
         // Draw knob circle
         let deltaX = sin(position * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
         let deltaY = cos(position * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
-        CGContextAddEllipseInRect(context, CGRect(x: rect.midX + deltaX - knobSize / 2.0, y: rect.midY - deltaY - knobSize / 2.0, width: knobSize, height: knobSize))
+        CGContextAddEllipseInRect(context, CGRect(x: bounds.midX + deltaX - knobSize / 2.0, y: bounds.midY - deltaY - knobSize / 2.0, width: knobSize, height: knobSize))
         CGContextSetFillColor(context, CGColorGetComponents(knobColor.CGColor))
         CGContextFillPath(context)
     }
