@@ -15,23 +15,45 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     @IBOutlet weak var ledView: LEDView!
     @IBOutlet weak var ledViewWidthLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var ledViewHeightLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var flySensor: UIView!
+    @IBOutlet weak var flySensorWidthLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var flySensorHeightLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var flySensorTopLayoutConstraint: NSLayoutConstraint!
 
     private lazy var nuimo: Nuimo = Nuimo().then{ $0.delegate = self }
     private var previousDialPosition: CGFloat = 0.0
     private var isFirstDragPosition = false
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        ledView.leds = []
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        dialView.superview?.layoutSubviews()
-        dialView.ringSize = min(dialView.frame.width, dialView.frame.height) * 0.1
-        dialView.knobSize = self.dialView.ringSize * 1.5
 
-        let ledViewSize = min(dialView.frame.width, dialView.frame.height) * 0.25
+        gestureView.layoutSubviews()
+        let nuimoSize = min(dialView.frame.width, dialView.frame.height)
+
+        dialView.ringSize = nuimoSize * 0.11
+        dialView.knobSize = dialView.ringSize * 1.5
+
+        let ledViewSize = nuimoSize * 0.2
         ledView.superview?.layoutSubviews()
         ledView.ledSize = ledViewSize * 0.09
         ledViewWidthLayoutConstraint.constant = ledViewSize
         ledViewHeightLayoutConstraint.constant = ledViewSize
         ledView.setNeedsLayout()
+
+        let flySensorTopOffset = dialView.frame.height > dialView.frame.width
+            ? (dialView.frame.height - dialView.frame.width) / 2
+            : 0
+        flySensorWidthLayoutConstraint.constant = nuimoSize * 0.03
+        flySensorHeightLayoutConstraint.constant = nuimoSize * 0.1
+        flySensorTopLayoutConstraint.constant = flySensorTopOffset + dialView.knobSize * 1.2
+        flySensor.layer.cornerRadius = flySensorWidthLayoutConstraint.constant / 2.0
+
+        dialView.setNeedsLayout()
     }
 
     @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
