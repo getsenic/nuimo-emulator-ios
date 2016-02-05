@@ -24,8 +24,8 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4G-31-vQa" customClass="DialView" customModule="NuimoEmulator" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="560" height="500"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0s4-8z-yoD" customClass="LEDView" customModule="NuimoEmulator" customModuleProvider="target">
-                                                <rect key="frame" x="205" y="182" width="150" height="150"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0s4-8z-yoD" customClass="LEDView" customModule="NuimoEmulator" customModuleProvider="target">
+                                                <rect key="frame" x="205" y="175" width="150" height="150"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="150" id="DF7-Hn-Mt2"/>
@@ -72,7 +72,7 @@
                                             <constraint firstItem="0s4-8z-yoD" firstAttribute="centerX" secondItem="D4G-31-vQa" secondAttribute="centerX" id="t3B-Vh-ofH"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="knobSize">
+                                            <userDefinedRuntimeAttribute type="number" keyPath="handleSize">
                                                 <real key="value" value="60"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="ringSize">

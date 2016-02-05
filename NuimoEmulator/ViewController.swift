@@ -22,8 +22,8 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     @IBOutlet weak var flySensorTopLayoutConstraint: NSLayoutConstraint!
 
     private var nuimo: Nuimo = Nuimo()
-    private var previousDialPosition: CGFloat = 0.0
-    private var isFirstDragPosition = false
+    private var previousDialValue: CGFloat = 0.0
+    private var isFirstDragValue = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
         let nuimoSize = min(dialView.frame.width, dialView.frame.height)
 
         dialView.ringSize = nuimoSize * 0.11
-        dialView.knobSize = dialView.ringSize * 1.5
+        dialView.handleSize = dialView.ringSize * 1.5
 
         let ledViewSize = nuimoSize * 0.2
         ledView.superview?.layoutSubviews()
@@ -53,7 +53,7 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
             : 0
         flySensorWidthLayoutConstraint.constant = nuimoSize * 0.03
         flySensorHeightLayoutConstraint.constant = nuimoSize * 0.1
-        flySensorTopLayoutConstraint.constant = flySensorTopOffset + dialView.knobSize * 1.2
+        flySensorTopLayoutConstraint.constant = flySensorTopOffset + dialView.handleSize * 1.2
         flySensor.layer.cornerRadius = flySensorWidthLayoutConstraint.constant / 2.0
 
         dialView.setNeedsLayout()
@@ -75,15 +75,15 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
 
     //MARK: DialViewDelegate
 
-    func dialView(dialView: DialView, didUpdatePosition position: CGFloat) {
+    func dialView(dialView: DialView, didChangeValue value: CGFloat) {
         defer {
-            isFirstDragPosition = false
-            previousDialPosition = position
+            isFirstDragValue = false
+            previousDialValue = value
         }
-        guard previousDialPosition != position else { return }
-        guard !isFirstDragPosition else { return }
+        guard previousDialValue != value else { return }
+        guard !isFirstDragValue else { return }
 
-        var delta = Double(position - previousDialPosition)
+        var delta = Double(value - previousDialValue)
         if delta > 0.5 {
             delta = 1 - delta
         }
@@ -95,8 +95,8 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
 
     func dialViewDidStartDragging(dialView: DialView) {
         gestureView.gestureRecognizers?.forEach { $0.enabled = false }
-        previousDialPosition = dialView.position
-        isFirstDragPosition = true
+        previousDialValue = dialView.value
+        isFirstDragValue = true
     }
 
     func dialViewDidEndDragging(dialView: DialView) {

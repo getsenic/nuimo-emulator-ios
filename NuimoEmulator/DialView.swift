@@ -20,15 +20,15 @@ public class DialView : UIControl {
     @IBInspectable
     public var ringSize: CGFloat = 40.0 { didSet { setNeedsDisplay() } }
     @IBInspectable
-    public var knobSize: CGFloat = 50.0 { didSet { setNeedsDisplay() } }
+    public var handleSize: CGFloat = 50.0 { didSet { setNeedsDisplay() } }
 
     @IBInspectable
-    public var position: CGFloat = 0.0 {
+    public var value: CGFloat = 0.0 {
         didSet {
-            guard oldValue != position else { return }
+            guard oldValue != value else { return }
             self.setNeedsDisplay()
             self.sendActionsForControlEvents(.ValueChanged)
-            self.delegate?.dialView(self, didUpdatePosition: position)
+            self.delegate?.dialView(self, didChangeValue: value)
         }
     }
 
@@ -48,7 +48,7 @@ public class DialView : UIControl {
 
     private var size: CGFloat { return min(frame.width, frame.height) }
 
-    private var rotationSize: CGFloat { return size - max(knobSize, ringSize) }
+    private var rotationSize: CGFloat { return size - max(handleSize, ringSize) }
 
     private var dragging = false
 
@@ -56,7 +56,7 @@ public class DialView : UIControl {
         let context = UIGraphicsGetCurrentContext()
 
         // Draw outer circle = ring
-        let x = max(0, knobSize - ringSize)
+        let x = max(0, handleSize - ringSize)
         CGContextAddEllipseInRect(context, CGRect(x: (bounds.width - size + x) / 2.0, y: (bounds.height - size + x) / 2.0, width: size - x, height: size - x))
         CGContextSetFillColor(context, CGColorGetComponents(ringColor.CGColor))
         CGContextFillPath(context)
@@ -69,9 +69,9 @@ public class DialView : UIControl {
         if !enabled { return }
 
         // Draw knob circle
-        let deltaX = sin(position * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
-        let deltaY = cos(position * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
-        CGContextAddEllipseInRect(context, CGRect(x: bounds.midX + deltaX - knobSize / 2.0, y: bounds.midY - deltaY - knobSize / 2.0, width: knobSize, height: knobSize))
+        let deltaX = sin(value * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
+        let deltaY = cos(value * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
+        CGContextAddEllipseInRect(context, CGRect(x: bounds.midX + deltaX - handleSize / 2.0, y: bounds.midY - deltaY - handleSize / 2.0, width: handleSize, height: handleSize))
         CGContextSetFillColor(context, CGColorGetComponents(knobColor.CGColor))
         CGContextFillPath(context)
     }
@@ -96,19 +96,19 @@ public class DialView : UIControl {
 
     private func isRingTouch(touch: UITouch) -> Bool {
         let point = touch.locationInView(self)
-        return sqrt(pow(frame.height / 2.0 - point.y, 2.0) + pow(point.x - frame.width / 2.0, 2.0)) > (rotationSize - max(knobSize, ringSize)) / 2.0
+        return sqrt(pow(frame.height / 2.0 - point.y, 2.0) + pow(point.x - frame.width / 2.0, 2.0)) > (rotationSize - max(handleSize, ringSize)) / 2.0
     }
 
     private func performRotation(touch: UITouch) {
         let point = touch.locationInView(self)
         let pos = atan2(point.x - frame.width / 2.0, frame.height / 2.0 - point.y) / 2.0 / CGFloat(M_PI)
-        position = pos >= 0 ? pos : pos + 1.0
+        value = pos >= 0 ? pos : pos + 1.0
     }
 }
 
 @objc
 public protocol DialViewDelegate {
-    func dialView(dialView: DialView, didUpdatePosition position: CGFloat)
+    func dialView(dialView: DialView, didChangeValue value: CGFloat)
     optional func dialViewDidStartDragging(dialView: DialView)
     optional func dialViewDidEndDragging(dialView: DialView)
 }
