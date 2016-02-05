@@ -77,6 +77,7 @@ public class DialView : UIControl {
     }
 
     public override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        guard enabled else { return }
         dragging = isRingTouch(touches.first!)
         guard dragging else { return }
         delegate?.dialViewDidStartDragging?(self)
