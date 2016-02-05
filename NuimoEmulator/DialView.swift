@@ -10,7 +10,7 @@ import UIKit
 
 //TODO: Publish as Cocoa Pod with GIF animation on github showing how the value changes on rotating
 @IBDesignable
-public class DialView : UIView {
+public class DialView : UIControl {
     @IBInspectable
     public var ringColor: UIColor = UIColor(colorLiteralRed: 0.25, green: 0.25, blue: 0.25, alpha: 1.0) { didSet { setNeedsDisplay() } }
     @IBInspectable
@@ -30,6 +30,8 @@ public class DialView : UIView {
             self.delegate?.dialView(self, didUpdatePosition: position)
         }
     }
+
+    public override var enabled: Bool { didSet { setNeedsDisplay() } }
 
     @IBOutlet
     public var delegate: DialViewDelegate?
@@ -62,6 +64,8 @@ public class DialView : UIView {
         CGContextAddEllipseInRect(context, bounds.insetBy(dx: (frame.width - rotationSize + ringSize) / 2.0, dy: (frame.height - rotationSize + ringSize) / 2.0))
         CGContextSetFillColor(context, CGColorGetComponents(surfaceColor.CGColor))
         CGContextFillPath(context)
+
+        if !enabled { return }
 
         // Draw knob circle
         let deltaX = sin(position * 2.0 * CGFloat(M_PI)) * rotationSize / 2.0
@@ -107,4 +111,3 @@ public protocol DialViewDelegate {
     optional func dialViewDidStartDragging(dialView: DialView)
     optional func dialViewDidEndDragging(dialView: DialView)
 }
-
