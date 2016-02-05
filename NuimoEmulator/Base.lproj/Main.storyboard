@@ -5,6 +5,11 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
     <scenes>
         <!--Ib Delegate-->
         <scene sceneID="tne-QT-ifu">
@@ -32,13 +37,13 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="To6-OB-W5I">
-                                <rect key="frame" x="20" y="138" width="560" height="406"/>
+                                <rect key="frame" x="20" y="138" width="560" height="398"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4G-31-vQa" customClass="DialView" customModule="NuimoEmulator" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="560" height="406"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="398"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0s4-8z-yoD" customClass="LEDView" customModule="NuimoEmulator" customModuleProvider="target">
-                                                <rect key="frame" x="205" y="128" width="150" height="150"/>
+                                                <rect key="frame" x="205" y="124" width="150" height="150"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="150" id="DF7-Hn-Mt2"/>
@@ -128,14 +133,14 @@
                                 </connections>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRs-3c-kFv">
-                                <rect key="frame" x="20" y="552" width="560" height="40"/>
+                                <rect key="frame" x="20" y="544" width="560" height="48"/>
                                 <gestureRecognizers/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="vfg-ev-V67"/>
+                                    <constraint firstAttribute="height" constant="48" id="vfg-ev-V67"/>
                                 </constraints>
                                 <string key="text">Nuimo On/Off state
 Disable/Enable bluetooth</string>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>

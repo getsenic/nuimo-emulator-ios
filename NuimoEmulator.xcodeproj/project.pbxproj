@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		461A133F1C5FBDE6008CEFE0 /* DialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 461A133E1C5FBDE6008CEFE0 /* DialView.swift */; };
 		4644A9601C61049D008E4206 /* Then.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4644A95F1C61049D008E4206 /* Then.swift */; };
+		46603F381C64C68D00641BF8 /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 46603F371C64C68D00641BF8 /* OpenSans-Regular.ttf */; };
 		468F30021C591392008D8958 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468F30011C591392008D8958 /* AppDelegate.swift */; };
 		468F30041C591392008D8958 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468F30031C591392008D8958 /* ViewController.swift */; };
 		468F30071C591392008D8958 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 468F30051C591392008D8958 /* Main.storyboard */; };
@@ -21,6 +22,7 @@
 /* Begin PBXFileReference section */
 		461A133E1C5FBDE6008CEFE0 /* DialView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialView.swift; sourceTree = "<group>"; };
 		4644A95F1C61049D008E4206 /* Then.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Then.swift; sourceTree = "<group>"; };
+		46603F371C64C68D00641BF8 /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "OpenSans-Regular.ttf"; sourceTree = "<group>"; };
 		468F2FFE1C591392008D8958 /* NuimoEmulator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NuimoEmulator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		468F30011C591392008D8958 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		468F30031C591392008D8958 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -43,6 +45,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		46603F361C64C67900641BF8 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				46603F371C64C68D00641BF8 /* OpenSans-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		468F2FF51C591391008D8958 = {
 			isa = PBXGroup;
 			children = (
@@ -72,6 +82,7 @@
 				468F30051C591392008D8958 /* Main.storyboard */,
 				468F300D1C591392008D8958 /* Info.plist */,
 				468F300A1C591392008D8958 /* LaunchScreen.storyboard */,
+				46603F361C64C67900641BF8 /* Fonts */,
 			);
 			path = NuimoEmulator;
 			sourceTree = "<group>";
@@ -137,6 +148,7 @@
 			files = (
 				468F300C1C591392008D8958 /* LaunchScreen.storyboard in Resources */,
 				468F30091C591392008D8958 /* Assets.xcassets in Resources */,
+				46603F381C64C68D00641BF8 /* OpenSans-Regular.ttf in Resources */,
 				468F30071C591392008D8958 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

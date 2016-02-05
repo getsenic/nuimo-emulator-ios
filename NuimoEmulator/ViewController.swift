@@ -107,8 +107,8 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
 
     func nuimo(nuimo: Nuimo, didChangeOnState on: Bool) {
         onOffStateLabel.text = on
-            ? "Nuimo is On.\nDisable bluetooth to power off Nuimo."
-            : "Nuimo is Off.\nEnable bluetooth to power on Nuimo."
+            ? "Nuimo is On\nDisable bluetooth to power off Nuimo"
+            : "Nuimo is Off\nEnable bluetooth to power on Nuimo"
         dialView.enabled = on
         displayLEDMatrix(on
             ? NuimoLEDMatrix.powerOn
