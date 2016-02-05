@@ -27,6 +27,7 @@ public class DialView : UIControl {
         didSet {
             guard oldValue != position else { return }
             self.setNeedsDisplay()
+            self.sendActionsForControlEvents(.ValueChanged)
             self.delegate?.dialView(self, didUpdatePosition: position)
         }
     }
