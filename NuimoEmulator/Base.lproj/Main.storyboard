@@ -9,7 +9,7 @@
         <!--Ib Delegate-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="NuimoSimulator" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="NuimoEmulator" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -18,20 +18,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nuimo On" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRs-3c-kFv">
-                                <rect key="frame" x="446" y="34" width="77" height="20"/>
-                                <gestureRecognizers/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="To6-OB-W5I">
-                                <rect key="frame" x="20" y="67" width="560" height="513"/>
+                                <rect key="frame" x="20" y="80" width="560" height="500"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4G-31-vQa" customClass="DialView" customModule="NuimoSimulator" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="560" height="513"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4G-31-vQa" customClass="DialView" customModule="NuimoEmulator" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="500"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0s4-8z-yoD" customClass="LEDView" customModule="NuimoSimulator" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0s4-8z-yoD" customClass="LEDView" customModule="NuimoEmulator" customModuleProvider="target">
                                                 <rect key="frame" x="205" y="182" width="150" height="150"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
@@ -112,29 +105,30 @@
                                     <outletCollection property="gestureRecognizers" destination="TOo-2k-1nR" appends="YES" id="Kvi-lj-mpU"/>
                                 </connections>
                             </view>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="37w-ee-gqh">
-                                <rect key="frame" x="531" y="28" width="51" height="31"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="49" id="NDy-Am-kwc"/>
-                                    <constraint firstAttribute="height" constant="31" id="oYE-fq-KrL"/>
-                                </constraints>
-                                <connections>
-                                    <action selector="onOffSwitchDidChangeValue:" destination="BYZ-38-t0r" eventType="valueChanged" id="uKz-lW-0fO"/>
-                                </connections>
-                            </switch>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nuimo On/Off state" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRs-3c-kFv">
+                                <rect key="frame" x="432" y="40" width="148" height="20"/>
+                                <gestureRecognizers/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="37w-ee-gqh" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="1eR-Lb-QPJ"/>
+                            <constraint firstItem="To6-OB-W5I" firstAttribute="top" secondItem="VRs-3c-kFv" secondAttribute="bottom" constant="20" id="5OD-k9-lpW"/>
+                            <constraint firstItem="VRs-3c-kFv" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="60v-O1-kFI"/>
                             <constraint firstItem="To6-OB-W5I" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="E2J-dP-AFP"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="To6-OB-W5I" secondAttribute="bottom" constant="20" id="GeP-5H-6ga"/>
-                            <constraint firstItem="To6-OB-W5I" firstAttribute="top" secondItem="37w-ee-gqh" secondAttribute="bottom" constant="8" id="JNq-QO-U8F"/>
-                            <constraint firstItem="37w-ee-gqh" firstAttribute="leading" secondItem="VRs-3c-kFv" secondAttribute="trailing" constant="8" id="JuO-CG-6E0"/>
                             <constraint firstItem="To6-OB-W5I" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="SiK-sX-4fi"/>
-                            <constraint firstItem="37w-ee-gqh" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="Stu-6I-4wY"/>
-                            <constraint firstItem="VRs-3c-kFv" firstAttribute="centerY" secondItem="37w-ee-gqh" secondAttribute="centerY" id="lDR-rs-1Ew"/>
+                            <constraint firstItem="VRs-3c-kFv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="YtJ-L7-xS4"/>
+                            <constraint firstItem="To6-OB-W5I" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="47" id="d7K-tH-ena"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="d7K-tH-ena"/>
+                            </mask>
+                        </variation>
                     </view>
                     <connections>
                         <outlet property="dialView" destination="D4G-31-vQa" id="ysK-jY-fsP"/>
@@ -146,6 +140,7 @@
                         <outlet property="ledView" destination="0s4-8z-yoD" id="lwO-Ud-e9B"/>
                         <outlet property="ledViewHeightLayoutConstraint" destination="FeL-jN-y2w" id="9CN-t1-gQn"/>
                         <outlet property="ledViewWidthLayoutConstraint" destination="DF7-Hn-Mt2" id="kW5-8i-LJI"/>
+                        <outlet property="onOffStateLabel" destination="VRs-3c-kFv" id="Oji-zO-V6X"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

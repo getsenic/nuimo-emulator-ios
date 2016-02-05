@@ -10,6 +10,7 @@ import UIKit
 
 class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
 
+    @IBOutlet weak var onOffStateLabel: UILabel!
     @IBOutlet weak var gestureView: UIView!
     @IBOutlet weak var dialView: DialView!
     @IBOutlet weak var ledView: LEDView!
@@ -20,13 +21,15 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     @IBOutlet weak var flySensorHeightLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var flySensorTopLayoutConstraint: NSLayoutConstraint!
 
-    private lazy var nuimo: Nuimo = Nuimo().then{ $0.delegate = self }
+    private var nuimo: Nuimo = Nuimo()
     private var previousDialPosition: CGFloat = 0.0
     private var isFirstDragPosition = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        ledView.leds = []
+        nuimo(nuimo, didChangeOnState: false)
+        nuimo.delegate = self
+        nuimo.powerOn()
     }
 
     override func viewDidLayoutSubviews() {
@@ -65,17 +68,6 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
         nuimo.swipe(NuimoSwipeDirection(swipeDirection: sender.direction))
     }
 
-    @IBAction func onOffSwitchDidChangeValue(sender: UISwitch) {
-        if sender.on {
-            nuimo.powerOn()
-            displayLEDMatrix(NuimoLEDMatrix.powerOn)
-        }
-        else {
-            nuimo.powerOff()
-            ledView.leds = []
-        }
-    }
-
     private func displayLEDMatrix(matrix: NuimoLEDMatrix) {
         ledView.leds = matrix.leds
         //TODO: Apply brightness and duration
@@ -112,6 +104,16 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     }
 
     //MARK: NuimoDelegate
+
+    func nuimo(nuimo: Nuimo, didChangeOnState on: Bool) {
+        onOffStateLabel.text = on
+            ? "Nuimo is On. Disable bluetooth to power off Nuimo."
+            : "Nuimo is Off. Enable bluetooth to power on Nuimo."
+        displayLEDMatrix(on
+            ? NuimoLEDMatrix.powerOn
+            : NuimoLEDMatrix.powerOff)
+    }
+
     func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix) {
         displayLEDMatrix(ledMatrix)
     }
@@ -146,4 +148,6 @@ extension NuimoLEDMatrix {
         0, 0, 0, 1, 1, 1, 0, 0, 0,
         0, 0, 0, 0, 1, 0, 0, 0, 0
         ].map{ $0 > 0 }, brightness: 1.0, duration: 2.0)
+
+    static let powerOff = NuimoLEDMatrix(leds: [], brightness: 0.0, duration: 0.0)
 }

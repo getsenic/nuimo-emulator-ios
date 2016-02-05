@@ -29,10 +29,6 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     private var lastRotationEventDate = NSDate()
     private let maxRotationEventsPerSecond = 10
 
-    override init() {
-        super.init()
-    }
-
     func powerOn() {
         guard peripheral.state == .PoweredOn else { return }
         guard !on else { return }
@@ -52,15 +48,17 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
                 }
             }
             .forEach(peripheral.addService)
+
+        delegate?.nuimo(self, didChangeOnState: true)
     }
     
-    func powerOff() {
+    private func powerOff() {
         guard on else { return }
 
         on = false
         reset()
 
-        //TODO: Hot to cut off existing connections?
+        delegate?.nuimo(self, didChangeOnState: false)
     }
 
     private func reset() {
@@ -213,6 +211,7 @@ enum NuimoSwipeDirection: Int {
 }
 
 protocol NuimoDelegate {
+    func nuimo(nuimo: Nuimo, didChangeOnState on: Bool)
     func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix)
 }
 
