@@ -106,9 +106,12 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     //MARK: NuimoDelegate
 
     func nuimo(nuimo: Nuimo, didChangeOnState on: Bool) {
-        onOffStateLabel.text = on
+        let onOffText = on
             ? "Nuimo is On\nDisable bluetooth to power off Nuimo"
             : "Nuimo is Off\nEnable bluetooth to power on Nuimo"
+        onOffStateLabel.attributedText = NSMutableAttributedString(string: onOffText).then {
+            $0.addAttribute(NSFontAttributeName, value: UIFont(name: "OpenSans-Bold", size: onOffStateLabel.font!.pointSize)!, range: NSRange(location: 0, length: (onOffText as NSString).rangeOfString("\n").location))
+        }
         dialView.enabled = on
         displayLEDMatrix(on
             ? NuimoLEDMatrix.powerOn
