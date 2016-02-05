@@ -18,14 +18,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NuimoBySenic_Black" translatesAutoresizingMaskIntoConstraints="NO" id="NlS-io-GFn">
+                                <rect key="frame" x="198" y="20" width="204" height="90"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="2sf-wN-gqn"/>
+                                    <constraint firstAttribute="width" constant="204" id="gl6-yq-Jdp"/>
+                                </constraints>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="To6-OB-W5I">
-                                <rect key="frame" x="20" y="80" width="560" height="500"/>
+                                <rect key="frame" x="20" y="118" width="560" height="426"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D4G-31-vQa" customClass="DialView" customModule="NuimoEmulator" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="560" height="500"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="560" height="426"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0s4-8z-yoD" customClass="LEDView" customModule="NuimoEmulator" customModuleProvider="target">
-                                                <rect key="frame" x="205" y="175" width="150" height="150"/>
+                                                <rect key="frame" x="205" y="138" width="150" height="150"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="150" id="DF7-Hn-Mt2"/>
@@ -48,6 +55,9 @@
                                                         <color key="value" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                                    <rect key="frame" x="105" y="175" width="150" height="150"/>
+                                                </variation>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aMN-6y-l8G">
                                                 <rect key="frame" x="272" y="75" width="16" height="46"/>
@@ -62,6 +72,9 @@
                                                     </userDefinedRuntimeAttribute>
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
+                                                <variation key="widthClass=compact" ambiguous="YES">
+                                                    <rect key="frame" x="172" y="75" width="16" height="46"/>
+                                                </variation>
                                             </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -85,6 +98,9 @@
                                                 <color key="value" red="0.33333333333333331" green="0.33333333333333331" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                            <rect key="frame" x="0.0" y="0.0" width="360" height="500"/>
+                                        </variation>
                                         <connections>
                                             <outlet property="ibDelegate" destination="BYZ-38-t0r" id="GbY-qZ-Mbc"/>
                                         </connections>
@@ -97,6 +113,9 @@
                                     <constraint firstItem="D4G-31-vQa" firstAttribute="leading" secondItem="To6-OB-W5I" secondAttribute="leading" id="WDS-0Y-vCa"/>
                                     <constraint firstAttribute="bottom" secondItem="D4G-31-vQa" secondAttribute="bottom" id="qFM-PL-taK"/>
                                 </constraints>
+                                <variation key="widthClass=compact" ambiguous="YES" misplaced="YES">
+                                    <rect key="frame" x="20" y="80" width="360" height="500"/>
+                                </variation>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="17f-Vj-Rnn" appends="YES" id="Jh2-yr-e77"/>
                                     <outletCollection property="gestureRecognizers" destination="PcU-6C-gnB" appends="YES" id="VYb-DN-UaP"/>
@@ -105,9 +124,14 @@
                                     <outletCollection property="gestureRecognizers" destination="TOo-2k-1nR" appends="YES" id="Kvi-lj-mpU"/>
                                 </connections>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nuimo On/Off state" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRs-3c-kFv">
-                                <rect key="frame" x="432" y="40" width="148" height="20"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRs-3c-kFv">
+                                <rect key="frame" x="20" y="552" width="560" height="40"/>
                                 <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="vfg-ev-V67"/>
+                                </constraints>
+                                <string key="text">Nuimo On/Off state
+Disable/Enable bluetooth</string>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -116,19 +140,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="To6-OB-W5I" firstAttribute="top" secondItem="VRs-3c-kFv" secondAttribute="bottom" constant="20" id="5OD-k9-lpW"/>
-                            <constraint firstItem="VRs-3c-kFv" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="60v-O1-kFI"/>
                             <constraint firstItem="To6-OB-W5I" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="E2J-dP-AFP"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="To6-OB-W5I" secondAttribute="bottom" constant="20" id="GeP-5H-6ga"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="VRs-3c-kFv" secondAttribute="bottom" constant="8" id="IQJ-4L-286"/>
+                            <constraint firstItem="VRs-3c-kFv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="Lf0-80-l7i"/>
                             <constraint firstItem="To6-OB-W5I" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="SiK-sX-4fi"/>
-                            <constraint firstItem="VRs-3c-kFv" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="YtJ-L7-xS4"/>
-                            <constraint firstItem="To6-OB-W5I" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="47" id="d7K-tH-ena"/>
+                            <constraint firstItem="VRs-3c-kFv" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="cFB-KW-7CK"/>
+                            <constraint firstItem="NlS-io-GFn" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="cHr-Fs-jwU"/>
+                            <constraint firstItem="VRs-3c-kFv" firstAttribute="top" secondItem="To6-OB-W5I" secondAttribute="bottom" constant="8" id="gNI-Ow-qjv"/>
+                            <constraint firstItem="NlS-io-GFn" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="gYn-20-rfT"/>
+                            <constraint firstItem="To6-OB-W5I" firstAttribute="top" secondItem="NlS-io-GFn" secondAttribute="bottom" constant="8" id="uUs-s7-UJh"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="d7K-tH-ena"/>
-                            </mask>
-                        </variation>
                     </view>
                     <connections>
                         <outlet property="dialView" destination="D4G-31-vQa" id="ysK-jY-fsP"/>
@@ -173,4 +194,7 @@
             <point key="canvasLocation" x="288" y="321"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="NuimoBySenic_Black" width="504" height="220"/>
+    </resources>
 </document>
