@@ -97,7 +97,7 @@ public class DialView : UIControl {
 
     private func isRingTouch(touch: UITouch) -> Bool {
         let point = touch.locationInView(self)
-        return sqrt(pow(frame.height / 2.0 - point.y, 2.0) + pow(point.x - frame.width / 2.0, 2.0)) > (rotationSize - max(handleSize, ringSize)) / 2.0
+        return abs(sqrt(pow(frame.height / 2.0 - point.y, 2.0) + pow(point.x - frame.width / 2.0, 2.0)) - rotationSize / 2.0) < max(handleSize, ringSize) / 2.0
     }
 
     private func performRotation(touch: UITouch) {
