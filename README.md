@@ -4,6 +4,8 @@ The Nuimo emulator for iOS can be used as a replacement for a physical Nuimo dev
 
 <img src="https://raw.githubusercontent.com/getsenic/nuimo-emulator-ios/master/screenshot.png" alt="Nuimo Emulator for iOS text" height="400">
 
+<a href="https://github.com/getsenic/nuimo-emulator-android/">Looking for a Nuimo emulator for your Android device?</a>
+
 ## How to use
 
 1. Clone this repository
