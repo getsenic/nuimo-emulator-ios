@@ -18,6 +18,7 @@ The Nuimo emulator for iOS can be used as a replacement for a physical Nuimo dev
 
 - Unlike Nuimo, the emulator continues to advertise when it is connected to a central device
 - Restarting the app does not disconnect central devices until you actually disable bluetooth
+- Fly events are not yet supported and will be added soon
 
 ## Support
 
