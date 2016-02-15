@@ -176,7 +176,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
                     return (0...7).map { (1 << $0) & byte > 0 }
                 }
                 let brightness = Double(bytes.advancedBy(11).memory) / 255.0
-                let duration = Double(bytes.advancedBy(12).memory) * 10.0
+                let duration = Double(bytes.advancedBy(12).memory) / 10.0
 
                 peripheral.respondToRequest(request, withResult: .Success)
 
@@ -215,10 +215,15 @@ protocol NuimoDelegate {
     func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix)
 }
 
-struct NuimoLEDMatrix {
+class NuimoLEDMatrix {
     var leds: [Bool]
     var brightness: Double
     var duration: Double
+    init(leds: [Bool], brightness: Double, duration: Double) {
+        self.leds = leds
+        self.brightness = brightness
+        self.duration = duration
+    }
 }
 
 //MARK: Nuimo GATT specification
