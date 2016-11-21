@@ -21,10 +21,10 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     @IBOutlet weak var flySensorHeightLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var flySensorTopLayoutConstraint: NSLayoutConstraint!
 
-    private var nuimo: Nuimo = Nuimo()
-    private var previousDialValue: CGFloat = 0.0
-    private var isFirstDragValue = false
-    private var ledFadeOutTimer: NSTimer?
+    fileprivate var nuimo: Nuimo = Nuimo()
+    fileprivate var previousDialValue: CGFloat = 0.0
+    fileprivate var isFirstDragValue = false
+    fileprivate var ledFadeOutTimer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,30 +60,30 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
         dialView.setNeedsLayout()
     }
 
-    @IBAction func didPerformTapGesture(sender: UITapGestureRecognizer) {
+    @IBAction func didPerformTapGesture(_ sender: UITapGestureRecognizer) {
         nuimo.pressButton()
         nuimo.releaseButton()
     }
     
-    @IBAction func didPerformSwipeGesture(sender: UISwipeGestureRecognizer) {
+    @IBAction func didPerformSwipeGesture(_ sender: UISwipeGestureRecognizer) {
         nuimo.swipe(NuimoSwipeDirection(swipeDirection: sender.direction))
     }
 
-    private func displayLEDMatrix(matrix: NuimoLEDMatrix) {
+    fileprivate func displayLEDMatrix(_ matrix: NuimoLEDMatrix) {
         ledFadeOutTimer?.invalidate()
         ledView.leds = matrix.leds
 
-        UIView.animateWithDuration(0.4) { self.ledView.alpha = CGFloat(matrix.brightness) }
+        UIView.animate(withDuration: 0.4, animations: { self.ledView.alpha = CGFloat(matrix.brightness) }) 
         if matrix.duration > 0 {
-            ledFadeOutTimer = NSTimer.schedule(delay: matrix.duration) { _ in
-                UIView.animateWithDuration(1.0, animations: { self.ledView.alpha = 0 })
+            ledFadeOutTimer = Timer.schedule(delay: matrix.duration) { _ in
+                UIView.animate(withDuration: 1.0, animations: { self.ledView.alpha = 0 })
             }
         }
     }
 
     //MARK: DialViewDelegate
 
-    func dialView(dialView: DialView, didChangeValue value: CGFloat) {
+    func dialView(_ dialView: DialView, didChangeValue value: CGFloat) {
         defer {
             isFirstDragValue = false
             previousDialValue = value
@@ -101,41 +101,41 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
         nuimo.rotate(delta)
     }
 
-    func dialViewDidStartDragging(dialView: DialView) {
-        gestureView.gestureRecognizers?.forEach { $0.enabled = false }
+    func dialViewDidStartDragging(_ dialView: DialView) {
+        gestureView.gestureRecognizers?.forEach { $0.isEnabled = false }
         previousDialValue = dialView.value
         isFirstDragValue = true
     }
 
-    func dialViewDidEndDragging(dialView: DialView) {
-        gestureView.gestureRecognizers?.forEach { $0.enabled = true }
+    func dialViewDidEndDragging(_ dialView: DialView) {
+        gestureView.gestureRecognizers?.forEach { $0.isEnabled = true }
     }
 
     //MARK: NuimoDelegate
 
-    func nuimo(nuimo: Nuimo, didChangeOnState on: Bool) {
+    func nuimo(_ nuimo: Nuimo, didChangeOnState on: Bool) {
         let onOffText = on
             ? "Nuimo is On\nDisable bluetooth to power off Nuimo"
             : "Nuimo is Off\nEnable bluetooth to power on Nuimo"
         onOffStateLabel.attributedText = NSMutableAttributedString(string: onOffText).then {
-            $0.addAttribute(NSFontAttributeName, value: UIFont(name: "OpenSans-Bold", size: onOffStateLabel.font!.pointSize)!, range: NSRange(location: 0, length: (onOffText as NSString).rangeOfString("\n").location))
+            $0.addAttribute(NSFontAttributeName, value: UIFont(name: "OpenSans-Bold", size: onOffStateLabel.font!.pointSize)!, range: NSRange(location: 0, length: (onOffText as NSString).range(of: "\n").location))
         }
-        dialView.enabled = on
+        dialView.isEnabled = on
         ledView.alpha = 0.0
         if on { displayLEDMatrix(NuimoLEDMatrix.powerOn) }
     }
 
-    func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix) {
+    func nuimo(_ nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix) {
         displayLEDMatrix(ledMatrix)
     }
 }
 
 extension NuimoSwipeDirection {
-    private static let map: [UISwipeGestureRecognizerDirection : NuimoSwipeDirection] = [
-        .Left  : .Left,
-        .Right : .Right,
-        .Up    : .Up,
-        .Down  : .Down
+    fileprivate static let map: [UISwipeGestureRecognizerDirection : NuimoSwipeDirection] = [
+        .left  : .left,
+        .right : .right,
+        .up    : .up,
+        .down  : .down
     ]
 
     init(swipeDirection: UISwipeGestureRecognizerDirection) {
@@ -161,11 +161,11 @@ extension NuimoLEDMatrix {
         ].map{ $0 > 0 }, brightness: 1.0, duration: 2.0)
 }
 
-extension NSTimer {
-    class func schedule(delay delay: NSTimeInterval, handler: NSTimer! -> Void) -> NSTimer {
+extension Timer {
+    class func schedule(delay: TimeInterval, handler: ((Timer?) -> Void)!) -> Timer! {
         let fireDate = delay + CFAbsoluteTimeGetCurrent()
         let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, 0, 0, 0, handler)
-        CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, kCFRunLoopCommonModes)
+        CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, CFRunLoopMode.commonModes)
         return timer
     }
 }
