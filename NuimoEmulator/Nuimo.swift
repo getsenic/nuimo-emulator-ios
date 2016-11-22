@@ -17,20 +17,20 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
 
     var delegate: NuimoDelegate?
 
-    private let deviceName = "Nuimo"
-    private let singleRotationValue = 2800
+    fileprivate let deviceName = "Nuimo"
+    fileprivate let singleRotationValue = 2800
 
-    private lazy var peripheral: CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-    private var on = false
-    private var characteristicForCharacteristicUUID = [CBUUID : CBMutableCharacteristic]()
-    private var addedServices = [CBUUID]()
-    private var updateQueue = [(CBUUID, [UInt8])]()
-    private var accumulatedRotationDelta = 0.0
-    private var lastRotationEventDate = NSDate()
-    private let maxRotationEventsPerSecond = 10
+    fileprivate lazy var peripheral: CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+    fileprivate var on = false
+    fileprivate var characteristicForCharacteristicUUID = [CBUUID : CBMutableCharacteristic]()
+    fileprivate var addedServices = [CBUUID]()
+    fileprivate var updateQueue = [(CBUUID, [UInt8])]()
+    fileprivate var accumulatedRotationDelta = 0.0
+    fileprivate var lastRotationEventDate = Date()
+    fileprivate let maxRotationEventsPerSecond = 10
 
     func powerOn() {
-        guard peripheral.state == .PoweredOn else { return }
+        guard peripheral.state == .poweredOn else { return }
         guard !on else { return }
 
         on = true
@@ -47,12 +47,12 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
                     }
                 }
             }
-            .forEach(peripheral.addService)
+            .forEach(peripheral.add(_:))
 
         delegate?.nuimo(self, didChangeOnState: true)
     }
     
-    private func powerOff() {
+    fileprivate func powerOff() {
         guard on else { return }
 
         on = false
@@ -61,7 +61,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         delegate?.nuimo(self, didChangeOnState: false)
     }
 
-    private func reset() {
+    fileprivate func reset() {
         accumulatedRotationDelta = 0.0
         updateQueue.removeAll()
         peripheral.stopAdvertising()
@@ -70,7 +70,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         characteristicForCharacteristicUUID.removeAll()
     }
 
-    private func startAdvertising() {
+    fileprivate func startAdvertising() {
         guard !peripheral.isAdvertising else { return }
         peripheral.startAdvertising([
             CBAdvertisementDataLocalNameKey :    deviceName,
@@ -87,11 +87,11 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         updateValue([0], forCharacteristicUUID: sensorButtonCharacteristicUUID)
     }
 
-    func swipe(direction: NuimoSwipeDirection) {
+    func swipe(_ direction: NuimoSwipeDirection) {
         updateValue([UInt8(direction.rawValue)], forCharacteristicUUID: sensorTouchCharacteristicUUID)
     }
 
-    func rotate(delta: Double) {
+    func rotate(_ delta: Double) {
         accumulatedRotationDelta += delta
 
         guard accumulatedRotationDelta != 0 else { return }
@@ -101,14 +101,14 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         let didSendValue = updateValue([UInt8(truncatingBitPattern: accumulatedRotationValue), UInt8(truncatingBitPattern: accumulatedRotationValue >> 8)], forCharacteristicUUID: sensorRotationCharacteristicUUID, autoQueueIfNotSend: false)
         if didSendValue {
             accumulatedRotationDelta = 0.0
-            lastRotationEventDate = NSDate()
+            lastRotationEventDate = Date()
         }
     }
 
-    private func updateValue(value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID, autoQueueIfNotSend: Bool = true) -> Bool {
-        guard let characteristic = characteristicForCharacteristicUUID[characteristicUUID] where on else { return false }
+    fileprivate func updateValue(_ value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID, autoQueueIfNotSend: Bool = true) -> Bool {
+        guard let characteristic = characteristicForCharacteristicUUID[characteristicUUID], on else { return false }
 
-        let didSendValue = peripheral.updateValue(NSData(bytes: value, length: value.count), forCharacteristic: characteristic, onSubscribedCentrals: nil)
+        let didSendValue = peripheral.updateValue(Data(bytes: UnsafePointer<UInt8>(value), count: value.count), for: characteristic, onSubscribedCentrals: nil)
         if !didSendValue && autoQueueIfNotSend {
             updateQueue.append((characteristicUUID, value))
         }
@@ -117,85 +117,85 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
 
     //MARK: CBPeripheralManagerDelegate
 
-    func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager) {
+    func peripheralManagerDidUpdateState(_ peripheral: CBPeripheralManager) {
         switch peripheral.state {
-        case .PoweredOn:  powerOn()
+        case .poweredOn:  powerOn()
         default:          powerOff()
         }
     }
 
-    func peripheralManager(peripheral: CBPeripheralManager, didAddService service: CBService, error: NSError?) {
+    func peripheralManager(_ peripheral: CBPeripheralManager, didAdd service: CBService, error: Error?) {
         if let error = error {
-            print("Cannot add service", error.localizedDescription, service.UUID)
+            print("Cannot add service", error.localizedDescription, service.uuid)
             return
         }
 
-        guard nuimoServiceUUIDs.contains(service.UUID) else { return }
+        guard nuimoServiceUUIDs.contains(service.uuid) else { return }
 
-        addedServices.append(service.UUID)
+        addedServices.append(service.uuid)
 
         if addedServices.count == nuimoServiceUUIDs.count {
             startAdvertising()
         }
     }
 
-    func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager, error: NSError?) {
+    func peripheralManagerDidStartAdvertising(_ peripheral: CBPeripheralManager, error: Error?) {
         if let error = error {
             print("Cannot start advertising", error.localizedDescription)
         }
     }
 
-    func peripheralManager(peripheral: CBPeripheralManager, didReceiveReadRequest request: CBATTRequest) {
-        switch request.characteristic.UUID {
+    func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveRead request: CBATTRequest) {
+        switch request.characteristic.uuid {
         case genericAccessDeviceNameCharacteristicUUID:
-            request.value = deviceName.dataUsingEncoding(NSUTF8StringEncoding)
-            peripheral.respondToRequest(request, withResult: .Success)
+            request.value = deviceName.data(using: String.Encoding.utf8)
+            peripheral.respond(to: request, withResult: .success)
         case batteryCharacteristicUUID:
             let bytes = [100]
-            request.value = NSData(bytes: bytes, length: bytes.count)
-            peripheral.respondToRequest(request, withResult: .Success)
+            request.value = Data(bytes: bytes, count: bytes.count)
+            peripheral.respond(to: request, withResult: .success)
         case deviceInformationCharacteristicUUID:
             //TODO: Respond request
             fallthrough
         default:
-            peripheral.respondToRequest(request, withResult: .RequestNotSupported)
+            peripheral.respond(to: request, withResult: .requestNotSupported)
         }
     }
 
-    func peripheralManager(peripheral: CBPeripheralManager, didReceiveWriteRequests requests: [CBATTRequest]) {
+    func peripheralManager(_ peripheral: CBPeripheralManager, didReceiveWrite requests: [CBATTRequest]) {
         requests.forEach { request in
-            switch request.characteristic.UUID {
+            switch request.characteristic.uuid {
             case ledMatrixCharacteristicUUID:
-                guard let data = request.value where data.length == 13 else {
-                    peripheral.respondToRequest(request, withResult: .InvalidAttributeValueLength)
+                guard let data = request.value, data.count == 13 else {
+                    peripheral.respond(to: request, withResult: .invalidAttributeValueLength)
                     break
                 }
-                let bytes = UnsafePointer<UInt8>(data.bytes)
+                let bytes = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
                 let leds: [Bool] = (0...10).flatMap { i -> [Bool] in
                     let byte = bytes[i]
                     return (0...7).map { (1 << $0) & byte > 0 }
                 }
-                let brightness = Double(bytes.advancedBy(11).memory) / 255.0
-                let duration = Double(bytes.advancedBy(12).memory) / 10.0
+                let brightness = Double(bytes.advanced(by:11).pointee) / 255.0
+                let duration = Double(bytes.advanced(by:12).pointee) / 10.0
 
-                peripheral.respondToRequest(request, withResult: .Success)
+                peripheral.respond(to: request, withResult: .success)
 
                 delegate?.nuimo(self, didReceiveLEDMatrix: NuimoLEDMatrix(leds: leds, brightness: brightness, duration: duration))
             default:
-                peripheral.respondToRequest(request, withResult: .RequestNotSupported)
+                peripheral.respond(to: request, withResult: .requestNotSupported)
             }
         }
     }
 
-    func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didSubscribeToCharacteristic characteristic: CBCharacteristic) {
-        print("Subscribed to ", characteristic.UUID)
+    func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didSubscribeTo characteristic: CBCharacteristic) {
+        print("Subscribed to ", characteristic.uuid)
     }
 
-    func peripheralManager(peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFromCharacteristic characteristic: CBCharacteristic) {
-        print("Unsubscribed from ", characteristic.UUID)
+    func peripheralManager(_ peripheral: CBPeripheralManager, central: CBCentral, didUnsubscribeFrom characteristic: CBCharacteristic) {
+        print("Unsubscribed from ", characteristic.uuid)
     }
 
-    func peripheralManagerIsReadyToUpdateSubscribers(peripheral: CBPeripheralManager) {
+    func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager) {
         while updateQueue.count > 0 {
             let (characteristicUUID, value) = updateQueue.removeFirst()
             updateValue(value, forCharacteristicUUID: characteristicUUID, autoQueueIfNotSend: true)
@@ -204,15 +204,15 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
 }
 
 enum NuimoSwipeDirection: Int {
-    case Left = 0
-    case Right = 1
-    case Up = 2
-    case Down = 3
+    case left = 0
+    case right = 1
+    case up = 2
+    case down = 3
 }
 
 protocol NuimoDelegate {
-    func nuimo(nuimo: Nuimo, didChangeOnState on: Bool)
-    func nuimo(nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix)
+    func nuimo(_ nuimo: Nuimo, didChangeOnState on: Bool)
+    func nuimo(_ nuimo: Nuimo, didReceiveLEDMatrix ledMatrix: NuimoLEDMatrix)
 }
 
 class NuimoLEDMatrix {
@@ -269,27 +269,27 @@ private let nuimoCharactericUUIDsForServiceUUID = [
 ]
 
 private let characteristicPropertiesForCharacteristicUUID : [CBUUID : CBCharacteristicProperties] = [
-    genericAccessDeviceNameCharacteristicUUID :     [.Read, .Write],
-    genericAccessAppearanceCharacteristicUUID :     [.Read],
-    genericAccessConnParametersCharacteristicUUID : [.Read],
-    batteryCharacteristicUUID :                     [.Read, .Notify],
-    deviceInformationCharacteristicUUID :           [.Read],
-    ledMatrixCharacteristicUUID :                   [.Write],
-    sensorFlyCharacteristicUUID :                   [.Notify],
-    sensorTouchCharacteristicUUID :                 [.Notify],
-    sensorRotationCharacteristicUUID :              [.Notify],
-    sensorButtonCharacteristicUUID :                [.Notify]
+    genericAccessDeviceNameCharacteristicUUID :     [.read, .write],
+    genericAccessAppearanceCharacteristicUUID :     [.read],
+    genericAccessConnParametersCharacteristicUUID : [.read],
+    batteryCharacteristicUUID :                     [.read, .notify],
+    deviceInformationCharacteristicUUID :           [.read],
+    ledMatrixCharacteristicUUID :                   [.write],
+    sensorFlyCharacteristicUUID :                   [.notify],
+    sensorTouchCharacteristicUUID :                 [.notify],
+    sensorRotationCharacteristicUUID :              [.notify],
+    sensorButtonCharacteristicUUID :                [.notify]
 ]
 
 private let attributePermissionsForCharacteristicUUID : [CBUUID : CBAttributePermissions] = [
-    genericAccessDeviceNameCharacteristicUUID :     [.Readable, .Writeable],
-    genericAccessAppearanceCharacteristicUUID :     [.Readable],
-    genericAccessConnParametersCharacteristicUUID : [.Readable],
-    batteryCharacteristicUUID :                     [.Readable],
-    deviceInformationCharacteristicUUID :           [.Readable],
-    ledMatrixCharacteristicUUID :                   [.Writeable],
-    sensorFlyCharacteristicUUID :                   [.Readable],
-    sensorTouchCharacteristicUUID :                 [.Readable],
-    sensorRotationCharacteristicUUID :              [.Readable],
-    sensorButtonCharacteristicUUID :                [.Readable]
+    genericAccessDeviceNameCharacteristicUUID :     [.readable, .writeable],
+    genericAccessAppearanceCharacteristicUUID :     [.readable],
+    genericAccessConnParametersCharacteristicUUID : [.readable],
+    batteryCharacteristicUUID :                     [.readable],
+    deviceInformationCharacteristicUUID :           [.readable],
+    ledMatrixCharacteristicUUID :                   [.writeable],
+    sensorFlyCharacteristicUUID :                   [.readable],
+    sensorTouchCharacteristicUUID :                 [.readable],
+    sensorRotationCharacteristicUUID :              [.readable],
+    sensorButtonCharacteristicUUID :                [.readable]
 ]

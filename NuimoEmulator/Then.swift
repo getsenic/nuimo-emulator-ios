@@ -13,7 +13,7 @@ import Foundation
 protocol Then { }
 
 extension Then {
-    func then(@noescape block: Self -> Void) -> Self {
+    func then(_ block: (Self) -> Void) -> Self {
         block(self)
         return self
     }
