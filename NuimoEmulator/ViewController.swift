@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
+class ViewController: UIViewController {
 
     @IBOutlet weak var onOffStateLabel: UILabel!
     @IBOutlet weak var gestureView: UIView!
@@ -73,16 +73,16 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
         ledFadeOutTimer?.invalidate()
         ledView.leds = matrix.leds
 
-        UIView.animate(withDuration: 0.4, animations: { self.ledView.alpha = CGFloat(matrix.brightness) }) 
+        UIView.animate(withDuration: 0.4) { self.ledView.alpha = CGFloat(matrix.brightness) }
         if matrix.duration > 0 {
             ledFadeOutTimer = Timer.schedule(delay: matrix.duration) { _ in
                 UIView.animate(withDuration: 1.0, animations: { self.ledView.alpha = 0 })
             }
         }
     }
+}
 
-    //MARK: DialViewDelegate
-
+extension ViewController: DialViewDelegate {
     func dialView(_ dialView: DialView, didChangeValue value: CGFloat) {
         defer {
             isFirstDragValue = false
@@ -110,9 +110,9 @@ class ViewController: UIViewController, DialViewDelegate, NuimoDelegate {
     func dialViewDidEndDragging(_ dialView: DialView) {
         gestureView.gestureRecognizers?.forEach { $0.isEnabled = true }
     }
+}
 
-    //MARK: NuimoDelegate
-
+extension ViewController: NuimoDelegate{
     func nuimo(_ nuimo: Nuimo, didChangeOnState on: Bool) {
         let onOffText = on
             ? "Nuimo is On\nDisable bluetooth to power off Nuimo"
@@ -158,12 +158,12 @@ extension NuimoLEDMatrix {
         0, 0, 1, 1, 1, 1, 1, 0, 0,
         0, 0, 0, 1, 1, 1, 0, 0, 0,
         0, 0, 0, 0, 1, 0, 0, 0, 0
-        ].map{ $0 > 0 }, brightness: 1.0, duration: 2.0)
+    ].map{ $0 > 0 }, brightness: 1.0, duration: 2.0)
 }
 
 extension Timer {
-    class func schedule(delay: TimeInterval, handler: ((Timer?) -> Void)!) -> Timer! {
-        let fireDate = delay + CFAbsoluteTimeGetCurrent()
+    class func schedule(delay: TimeInterval, handler: @escaping ((Timer?) -> Void)) -> Timer! {
+        let fireDate = CFAbsoluteTimeGetCurrent() + delay
         let timer = CFRunLoopTimerCreateWithHandler(kCFAllocatorDefault, fireDate, 0, 0, 0, handler)
         CFRunLoopAddTimer(CFRunLoopGetCurrent(), timer, CFRunLoopMode.commonModes)
         return timer

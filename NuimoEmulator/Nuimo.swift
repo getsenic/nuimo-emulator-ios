@@ -17,17 +17,17 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
 
     var delegate: NuimoDelegate?
 
-    fileprivate let deviceName = "Nuimo"
-    fileprivate let singleRotationValue = 2800
+    private let deviceName = "Nuimo"
+    private let singleRotationValue = 2800
 
-    fileprivate lazy var peripheral: CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
-    fileprivate var on = false
-    fileprivate var characteristicForCharacteristicUUID = [CBUUID : CBMutableCharacteristic]()
-    fileprivate var addedServices = [CBUUID]()
-    fileprivate var updateQueue = [(CBUUID, [UInt8])]()
-    fileprivate var accumulatedRotationDelta = 0.0
-    fileprivate var lastRotationEventDate = Date()
-    fileprivate let maxRotationEventsPerSecond = 10
+    private lazy var peripheral: CBPeripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+    private var on = false
+    private var characteristicForCharacteristicUUID = [CBUUID : CBMutableCharacteristic]()
+    private var addedServices = [CBUUID]()
+    private var updateQueue = [(CBUUID, [UInt8])]()
+    private var accumulatedRotationDelta = 0.0
+    private var lastRotationEventDate = Date()
+    private let maxRotationEventsPerSecond = 10
 
     func powerOn() {
         guard peripheral.state == .poweredOn else { return }
@@ -52,7 +52,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         delegate?.nuimo(self, didChangeOnState: true)
     }
     
-    fileprivate func powerOff() {
+    private func powerOff() {
         guard on else { return }
 
         on = false
@@ -61,7 +61,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         delegate?.nuimo(self, didChangeOnState: false)
     }
 
-    fileprivate func reset() {
+    private func reset() {
         accumulatedRotationDelta = 0.0
         updateQueue.removeAll()
         peripheral.stopAdvertising()
@@ -70,7 +70,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         characteristicForCharacteristicUUID.removeAll()
     }
 
-    fileprivate func startAdvertising() {
+    private func startAdvertising() {
         guard !peripheral.isAdvertising else { return }
         peripheral.startAdvertising([
             CBAdvertisementDataLocalNameKey :    deviceName,
@@ -80,15 +80,15 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     //MARK: User input
 
     func pressButton() {
-        updateValue([1], forCharacteristicUUID: sensorButtonCharacteristicUUID)
+        let _ = update(value: [1], forCharacteristicUUID: sensorButtonCharacteristicUUID)
     }
 
     func releaseButton() {
-        updateValue([0], forCharacteristicUUID: sensorButtonCharacteristicUUID)
+        let _ = update(value: [0], forCharacteristicUUID: sensorButtonCharacteristicUUID)
     }
 
     func swipe(_ direction: NuimoSwipeDirection) {
-        updateValue([UInt8(direction.rawValue)], forCharacteristicUUID: sensorTouchCharacteristicUUID)
+        let _ = update(value: [UInt8(direction.rawValue)], forCharacteristicUUID: sensorTouchCharacteristicUUID)
     }
 
     func rotate(_ delta: Double) {
@@ -98,14 +98,14 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
         guard Int(1.0 / -lastRotationEventDate.timeIntervalSinceNow) <= maxRotationEventsPerSecond else { return }
 
         let accumulatedRotationValue = Int16(Double(singleRotationValue) * accumulatedRotationDelta)
-        let didSendValue = updateValue([UInt8(truncatingBitPattern: accumulatedRotationValue), UInt8(truncatingBitPattern: accumulatedRotationValue >> 8)], forCharacteristicUUID: sensorRotationCharacteristicUUID, autoQueueIfNotSend: false)
+        let didSendValue = update(value: [UInt8(truncatingBitPattern: accumulatedRotationValue), UInt8(truncatingBitPattern: accumulatedRotationValue >> 8)], forCharacteristicUUID: sensorRotationCharacteristicUUID, autoQueueIfNotSend: false)
         if didSendValue {
             accumulatedRotationDelta = 0.0
             lastRotationEventDate = Date()
         }
     }
 
-    fileprivate func updateValue(_ value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID, autoQueueIfNotSend: Bool = true) -> Bool {
+    private func update(value: [UInt8], forCharacteristicUUID characteristicUUID: CBUUID, autoQueueIfNotSend: Bool = true) -> Bool {
         guard let characteristic = characteristicForCharacteristicUUID[characteristicUUID], on else { return false }
 
         let didSendValue = peripheral.updateValue(Data(bytes: UnsafePointer<UInt8>(value), count: value.count), for: characteristic, onSubscribedCentrals: nil)
@@ -198,7 +198,7 @@ class Nuimo : NSObject, CBPeripheralManagerDelegate {
     func peripheralManagerIsReady(toUpdateSubscribers peripheral: CBPeripheralManager) {
         while updateQueue.count > 0 {
             let (characteristicUUID, value) = updateQueue.removeFirst()
-            updateValue(value, forCharacteristicUUID: characteristicUUID, autoQueueIfNotSend: true)
+            let _ = update(value: value, forCharacteristicUUID: characteristicUUID, autoQueueIfNotSend: true)
         }
     }
 }

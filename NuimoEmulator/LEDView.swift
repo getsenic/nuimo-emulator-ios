@@ -9,22 +9,22 @@
 import UIKit
 
 @IBDesignable
-open class LEDView : UIView {
+class LEDView : UIView {
     @IBInspectable
-    open var columns: Int = 3 { didSet { setNeedsDisplay() } }
+    var columns: Int = 3 { didSet { setNeedsDisplay() } }
     @IBInspectable
-    open var rows: Int = 3 { didSet { setNeedsDisplay() } }
+    var rows: Int = 3 { didSet { setNeedsDisplay() } }
     @IBInspectable
-    open var ledSize: CGFloat = 24 { didSet { setNeedsDisplay() } }
+    var ledSize: CGFloat = 24 { didSet { setNeedsDisplay() } }
     @IBInspectable
-    open var onColor: UIColor = UIColor(red: 1.0, green: 0.0, blue: 0, alpha: 1) { didSet { setNeedsDisplay() } }
+    var onColor: UIColor = UIColor(red: 1.0, green: 0.0, blue: 0, alpha: 1) { didSet { setNeedsDisplay() } }
     @IBInspectable
-    open var offColor: UIColor = UIColor(red: 1.0, green: 0.0, blue: 0, alpha: 0.2) { didSet { setNeedsDisplay() } }
+    var offColor: UIColor = UIColor(red: 1.0, green: 0.0, blue: 0, alpha: 0.2) { didSet { setNeedsDisplay() } }
     @IBInspectable
-    open var leds: [Bool] = [true, true, true, true, true, true, true, true, true] { didSet { setNeedsDisplay() } }
+    var leds: [Bool] = [true, true, true, true, true, true, true, true, true] { didSet { setNeedsDisplay() } }
 
-    open override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()
+    override func draw(_ rect: CGRect) {
+        guard let context = UIGraphicsGetCurrentContext() else { return }
 
         let horzSpace = columns > 1
             ? (bounds.width - CGFloat(columns) * ledSize) / (CGFloat(columns) - 1.0)
@@ -35,11 +35,11 @@ open class LEDView : UIView {
 
         (0..<rows).forEach { row in
             (0..<columns).forEach { col in
-                context?.addEllipse(in: CGRect(x: CGFloat(col) * (ledSize + horzSpace), y: CGFloat(row) * (ledSize + vertSpace), width: ledSize - 1, height: ledSize - 1))
+                context.addEllipse(in: CGRect(x: CGFloat(col) * (ledSize + horzSpace), y: CGFloat(row) * (ledSize + vertSpace), width: ledSize - 1, height: ledSize - 1))
                 let ledIndex = row * columns + col
                 let color: UIColor = ledIndex < leds.count ? (leds[ledIndex] ? onColor : offColor) : offColor
-                context?.setFillColor(color.cgColor.components!)
-                context?.fillPath()
+                context.setFillColor(color.cgColor.components!)
+                context.fillPath()
             }
         }
     }
